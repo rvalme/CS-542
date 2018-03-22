@@ -1,0 +1,2 @@
+class Diet():
+    pass

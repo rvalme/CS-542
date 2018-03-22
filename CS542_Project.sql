@@ -252,3 +252,5 @@ VALUES('Ground clove', 'R01');
 
 SELECT * from Recipe;
 SELECT * from MakesUp;
+SELECT * FROM recipe;
+SELECT * FROM ingredient;
