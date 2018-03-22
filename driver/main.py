@@ -18,9 +18,12 @@ def main():
     server_interface=ServerInterface()
     dao = DaoRecipe()
     #ingredients_of_recipe = server_interface.get_ingredient_in_recipe()
-    recipes = server_interface.get_recipes()
+    #recipes = server_interface.get_recipes()
     #print(recipes)
-    recipes_instance = dao.build_recipe(recipes[0])
-    print(recipes_instance)
+    #recipes_instance = dao.build_recipe(recipes[0])
+    #print(recipes_instance)
+
+    ingredients = server_interface.get_ingredients()
+    print(ingredients)
 if __name__ == "__main__":
     main()

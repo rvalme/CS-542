@@ -46,7 +46,7 @@ class ServerInterface(Singleton):
             return recipes
 
     def get_ingredient_in_recipe(self):
-        ingredients = []
+        ingredients_in_recipes = []
         try:
             connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
@@ -56,9 +56,26 @@ class ServerInterface(Singleton):
             cur = connection.cursor()
             cur.execute(self.__query_factory.get_ingredients_in_recipe())
             for result in cur:
-                ingredients.append(result)
+                ingredients_in_recipes.append(result)
             cur.close()
             connection.close()
             print("done")
 
+            return ingredients_in_recipes
+
+    def get_ingredients(self):
+        ingredients = []
+        try:
+            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except:
+            print('Error: Could not connect to database')
+        else:
+            print('Connected to Oracle successfully')
+            cur = connection.cursor()
+            cur.execute(self.__query_factory.get_ingredients())
+            for result in cur:
+                ingredients.append(result)
+            cur.close()
+            connection.close()
+            print("done")
             return ingredients
