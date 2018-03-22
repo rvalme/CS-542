@@ -1,8 +1,15 @@
-import io
-
-
+'''
+    File name: recipe.py
+    Author: Chu Wang
+    Date Created: 3/10/2018
+    Date last modified: 3/22/2018
+    Python Version:3.6
+'''
 class Recipe:
-
+    '''
+    recipe attributes as defined in the database
+    missing chef ID, diet ID
+    '''
     def __init__(self):
         self.__recipe_id = None
         self.__recipe_name = None
@@ -12,6 +19,15 @@ class Recipe:
         self.__calories =0
         self.__sodium = 0
         self.__carbs = 0
+        self.__ingredients = []
+
+    @property
+    def ingredients(self):
+        return self.__ingredients
+
+    @ingredients.setter
+    def ingredients(self, ingredients):
+        self.__ingredients = ingredients
 
     @property
     def recipe_id(self):
@@ -91,10 +107,10 @@ class Recipe:
 
 
     def __repr__(self):
-        return "recipe id: {0}, recipe name: {1}, calories: {2}, carbs: {3}g, sugar: {4}g, fat: {5}g, protein: {6}g, sodium: {7}mg "\
+        return "recipe id: {0}, recipe name: {1}, calories: {2}, carbs: {3}g, sugar: {4}g, fat: {5}g, protein: {6}g, sodium: {7}mg, ingredients:{8}"\
             .format(self.__recipe_id, self.__recipe_name, self.__calories,
                                                            self.__carbs, self.__sugar, self.__fat, self.__protein,
-                                                           self.__sodium)
+                                                           self.__sodium, self.__ingredients)
 
     def to_string(self):
         return print(repr(self))

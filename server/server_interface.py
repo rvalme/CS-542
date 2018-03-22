@@ -1,18 +1,17 @@
+'''
+    File name: server_interface.py
+    Author: Chu Wang
+    Date Created: 3/10/2018
+    Date last modified: 3/22/2018
+    Python Version:3.6
+'''
 import cx_Oracle
 from server.query_factory import QueryFactory
-'''
-connection = cx_Oracle.connect('cwang9','CWANG9',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
-#type in your own username and password
-cur = connection.cursor()
-#cur.execute('SELECT * FROM ingredient')
-cur.execute('SELECT * FROM Employee')
-for result in cur:
-    print(result)
 
-cur.close()
-connection.close()
-'''
 class Singleton(object):
+    '''
+    Singleton implementation by __new__
+    '''
     _instance = None
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -21,10 +20,9 @@ class Singleton(object):
 
 class ServerInterface(Singleton):
     '''
-    def __init__(self):
-        self.__connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
-    # type in your own username and password
-    '''
+      This class connects with the database by using methods from cx_Oracle
+      Implemented as Singleton
+      '''
     def __init__(self):
         self.__query_factory = QueryFactory()
     def get_recipes(self):
@@ -79,3 +77,17 @@ class ServerInterface(Singleton):
             connection.close()
             print("done")
             return ingredients
+
+
+''''
+connection = cx_Oracle.connect('cwang9','CWANG9',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
+#type in your own username and password
+cur = connection.cursor()
+#cur.execute('SELECT * FROM ingredient')
+cur.execute('SELECT * FROM MakesUp')
+for result in cur:
+    print(result)
+
+cur.close()
+connection.close()
+'''
