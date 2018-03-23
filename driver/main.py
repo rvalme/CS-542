@@ -2,7 +2,7 @@
     File name: main.py
     Author: Chu Wang
     Date Created: 3/10/2018
-    Date last modified: 3/22/2018
+    Date last modified: 3/23/2018
     Python Version:3.6
 '''
 from recipe.recipe import Recipe
@@ -17,15 +17,15 @@ def main():
     '''
 
     server_interface=ServerInterface()
-    dao = DaoRecipe()
-    ingredients_of_recipe = server_interface.get_ingredient_in_recipe()
-    print(ingredients_of_recipe)
-    #recipes = server_interface.get_recipes()
-    #print(recipes)
+    #dao = DaoRecipe()
+    #ingredients_of_recipe = server_interface.get_ingredient_in_recipe()
+    #print(ingredients_of_recipe)
+    recipes = server_interface.get_recipes()
+    print(recipes)
     #recipes_instance = dao.build_recipe(recipes[0])
     #print(recipes_instance)
 
-    ingredients = server_interface.get_ingredients()
-    print(ingredients)
+    #ingredients = server_interface.get_ingredients()
+    #print(ingredients)
 if __name__ == "__main__":
     main()

@@ -19,7 +19,8 @@ class Recipe:
         self.__calories =0
         self.__sodium = 0
         self.__carbs = 0
-        self.__ingredients = []
+        self.__price = 0
+        self.__ingredients = {}
 
     @property
     def ingredients(self):
@@ -93,6 +94,14 @@ class Recipe:
     def carbs(self, carbs):
         self.__carbs = carbs
 
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, price):
+        self.__price = price
+
     def __eq__(self, other):
         equal = False
         if self is other:
@@ -107,10 +116,11 @@ class Recipe:
 
 
     def __repr__(self):
-        return "recipe id: {0}, recipe name: {1}, calories: {2}, carbs: {3}g, sugar: {4}g, fat: {5}g, protein: {6}g, sodium: {7}mg, ingredients:{8}"\
-            .format(self.__recipe_id, self.__recipe_name, self.__calories,
-                                                           self.__carbs, self.__sugar, self.__fat, self.__protein,
-                                                           self.__sodium, self.__ingredients)
+        return "recipe id: {0}, recipe name: {1}, calories: {2}, carbs: {3}g, " \
+               "sugar: {4}g, fat: {5}g, protein: {6}g, sodium: {7}mg," \
+               "price: {8}$, ingredients:{9}\n".format(self.__recipe_id, self.__recipe_name, self.__calories,
+                self.__carbs, self.__sugar, self.__fat, self.__protein,
+                self.__sodium,self.__price, self.__ingredients)
 
     def to_string(self):
         return print(repr(self))
