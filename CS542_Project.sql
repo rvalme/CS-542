@@ -30,6 +30,12 @@ INSERT
 INTO Diet(Type_of_diet)
 VALUES('Vegan');
 
+
+INSERT
+INTO Diet(Type_of_diet)
+VALUES('Paleolithic');
+
+
 CREATE TABLE Chooses(
 Type_of_diet CHAR(20),
 CID CHAR(20),
@@ -94,6 +100,23 @@ INSERT
 INTO Recipe(RID, RNAME, Carbs, Sugar, Fat, Protein, Calories, Sodium, Money_Cost)
 VALUES('R08', 'Kale Chips', '7.8g', '0g', '3.2g', '2.2g', '69kcal', '32mg', 3);
 
+INSERT
+INTO Recipe(RID, RNAME, Carbs, Sugar, Fat, Protein, Calories, Sodium, Money_Cost)
+VALUES('R09', 'Slow Cooker Paprika Chicken', '8g', '3.4g', '6.3g', '35.6g', '237kcal', '1586mg', 7);
+
+INSERT
+INTO Recipe(RID, RNAME, Carbs, Sugar, Fat, Protein, Calories, Sodium, Money_Cost)
+VALUES('R10', 'Chorizo Stuffed Jalapenos', '13.1g', '2g', '88.3g', '56.5g', '1080kcal', '4277mg', 7);
+
+INSERT
+INTO Recipe(RID, RNAME, Carbs, Sugar, Fat, Protein, Calories, Sodium, Money_Cost)
+VALUES('R11', 'Chocolate Walnut Date Balls', '384.9g', '254.5g', '76.6g', '45.8g', '2152kcal', '943mg', 7);
+
+
+INSERT
+INTO Recipe(RID, RNAME, Carbs, Sugar, Fat, Protein, Calories, Sodium, Money_Cost)
+VALUES('R12', 'Olive Oil Mashed Cauliflower', '25.2g', '11.6g', '70.7g', '9.4g', '721kcal', '1065mg', 7);
+
 
 CREATE TABLE CanRequest(
 RID CHAR(20),
@@ -146,6 +169,22 @@ INSERT
 INTO SubscribesTo(RID, Type_of_diet)
 VALUES('R08', 'Vegan');
 
+INSERT
+INTO SubscribesTo(RID, Type_of_diet)
+VALUES('R09', 'Paleolithic');
+
+INSERT
+INTO SubscribesTo(RID, Type_of_diet)
+VALUES('R10', 'Paleolithic');
+
+INSERT
+INTO SubscribesTo(RID, Type_of_diet)
+VALUES('R11', 'Paleolithic');
+
+INSERT
+INTO SubscribesTo(RID, Type_of_diet)
+VALUES('R12', 'Paleolithic');
+
 CREATE TABLE MakesInstanceOf(
 RID CHAR(20),
 ChID CHAR(20),
@@ -197,7 +236,7 @@ VALUES('Ground allspice', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Dried oregano', 20, 'tbsp');
+VALUES('Dried oregano', 20, 'tsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -253,7 +292,7 @@ VALUES('Bay Leaf', 20, 'actual');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Safflower oil', 20, 'Tbsp');
+VALUES('Safflower oil', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -269,7 +308,7 @@ VALUES('Chipotle peppers', 20, 'actual');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Adobo sauce', 20, 'Tbsp');
+VALUES('Adobo sauce', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -285,15 +324,15 @@ VALUES('Vegetable broth', 20, 'cups');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Chili powder', 20, 'Tbsp');
+VALUES('Chili powder', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Brown mustard seeds', 20, 'Tbsp');
+VALUES('Brown mustard seeds', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Fresh ground pepper', 20, 'Tsp');
+VALUES('Fresh ground pepper', 20, 'tsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -321,11 +360,11 @@ VALUES('Bread flour', 20, 'cups');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Baking powder', 20, 'Tbsp');
+VALUES('Baking powder', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Dried parsely', 20, 'Tbsp');
+VALUES('Dried parsely', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -333,7 +372,7 @@ VALUES('Red bell pepper', 20, 'actual');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Seasoned salt', 20, 'Tbsp');
+VALUES('Seasoned salt', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -353,7 +392,7 @@ VALUES('Green onions', 20, 'cups');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Lime juice', 20, 'Tbsp');
+VALUES('Lime juice', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -365,11 +404,11 @@ VALUES('Tahini', 20, 'cups');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Lemon juice', 20, 'cups');
+VALUES('Lemon juice', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Olive oil', 20, 'Tbsp');
+VALUES('Olive oil', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -377,7 +416,7 @@ VALUES('tarragon', 20, 'cup');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('chives', 20, 'Tbsp');
+VALUES('chives', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -389,11 +428,11 @@ VALUES('Tofu', 20, 'oz');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Tamari', 20, 'Tbsp');
+VALUES('Tamari', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
-VALUES('Cornstarch', 20, 'Tbsp');
+VALUES('Cornstarch', 20, 'tbsp');
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -402,6 +441,53 @@ VALUES('Bread', 20, 'oz');
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
 VALUES('Avocado oil', 20, 'ml');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Chicken breast', 20, 'lbs');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Chicken broth', 20, 'cups');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Chorizo', 20, 'lbs');
+
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Ground cumin', 20, 'tsp');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Walnuts', 20, 'cups');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Dates pitted', 20, 'actual');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Sea salt', 20, 'tsp');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Vanilla extract', 20, 'tsp');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Cocoa powder', 20, 'cups');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Cauliflower', 20, 'cups');
+
+INSERT
+INTO Ingredient(INAME, Quantity, Unit)
+VALUES('Coconut milk', 20, 'cups');
+
+
 
 
 CREATE TABLE MakesUp(
@@ -446,7 +532,7 @@ VALUES('Ground allspice', 'R01', .5);
 
 INSERT
 INTO MakesUp(INAME, RID, Amount)
-VALUES('Dried oregano', 'R01', .5);
+VALUES('Dried oregano', 'R01', 1.5);
 
 INSERT
 INTO MakesUp(INAME, RID, Amount)
@@ -635,7 +721,7 @@ VALUES('Tahini', 'R05', .25);
 
 INSERT
 INTO MakesUp(INAME, RID, Amount)
-VALUES('Lemon juice', 'R05', .25);
+VALUES('Lemon juice', 'R05', 4);
 
 INSERT
 INTO MakesUp(INAME, RID, Amount)
@@ -717,7 +803,93 @@ INSERT
 INTO MakesUp(INAME, RID, Amount)
 VALUES('Chili powder', 'R08', .3);
 
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Chicken breast', 'R09', 1.5);
 
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Onion', 'R09', 1);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Paprika', 'R09', 3);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Lemon juice', 'R09', 1);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Chicken broth', 'R09', 2);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Chorizo', 'R10', 1.5);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Ground cumin', 'R10', 1);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Dried oregano', 'R10',.5);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Garlic cloves', 'R10', 2);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Jalapeno', 'R10', 4);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Fresh ground pepper', 'R10', 1);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Walnuts', 'R11', 1);
+
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Dates pitted', 'R11', 12);
+
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Vanilla extract', 'R11', 1);
+
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Sea salt', 'R11', .5);
+
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Cocoa powder', 'R11', .25);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Cauliflower', 'R12', 4);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Coconut milk', 'R12',.25);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Olive oil', 'R12', .25);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Sea salt', 'R12', .5);
+
+INSERT
+INTO MakesUp(INAME, RID, Amount)
+VALUES('Fresh ground pepper', 'R12', .5);
 
 SELECT * from Recipe;
 SELECT * from MakesUp;
