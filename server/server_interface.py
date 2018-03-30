@@ -2,7 +2,7 @@
     File name: server_interface.py
     Author: Chu Wang
     Date Created: 3/10/2018
-    Date last modified: 3/23/2018
+    Date last modified: 3/29/2018
     Python Version:3.6
 '''
 import cx_Oracle
@@ -43,7 +43,7 @@ class ServerInterface(Singleton):
         except cx_Oracle.DatabaseError as exception:
             self.printf('Failed to connect to %s\n', self.__database)
         else:
-            print('-------Connected to Oracle successfully--------')
+            #print('-------Connected to Oracle successfully--------')
             cur =connection.cursor()
             #Customer chooses Vegan
             if choice == 1:
@@ -74,7 +74,7 @@ class ServerInterface(Singleton):
 
 
             #Return the entire list of recipes
-            else:
+            elif choice == 0:
                 cur.execute(query_factory.get_recipes())
                 for result in cur:
                     recipes.append(result)
@@ -85,7 +85,7 @@ class ServerInterface(Singleton):
 
             cur.close()
             connection.close()
-            print("-------Connection closed-------")
+            #print("-------Connection closed-------")
             recipes = dao_recipe.add_to_recipes(recipes,ingredients)
             
             return recipes
