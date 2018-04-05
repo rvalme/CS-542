@@ -2,13 +2,14 @@
     File name: server_interface.py
     Author: Chu Wang
     Date Created: 3/10/2018
-    Date last modified: 3/23/2018
+    Date last modified: 3/29/2018
     Python Version:3.6
 '''
 import cx_Oracle
 import sys
 from server.query_factory import QueryFactory as query_factory
 from server.dao_recipe import DaoRecipe as dao_recipe
+from server.sort_by import SortBy as sort
 
 class Singleton(object):
     '''
@@ -43,7 +44,7 @@ class ServerInterface(Singleton):
         except cx_Oracle.DatabaseError as exception:
             self.printf('Failed to connect to %s\n', self.__database)
         else:
-            print('-------Connected to Oracle successfully--------')
+            #print('-------Connected to Oracle successfully--------')
             cur =connection.cursor()
             #Customer chooses Vegan
             if choice == 1:
@@ -74,7 +75,7 @@ class ServerInterface(Singleton):
 
 
             #Return the entire list of recipes
-            else:
+            elif choice == 0:
                 cur.execute(query_factory.get_recipes())
                 for result in cur:
                     recipes.append(result)
@@ -85,7 +86,7 @@ class ServerInterface(Singleton):
 
             cur.close()
             connection.close()
-            print("-------Connection closed-------")
+            #print("-------Connection closed-------")
             recipes = dao_recipe.add_to_recipes(recipes,ingredients)
             
             return recipes
@@ -137,6 +138,88 @@ class ServerInterface(Singleton):
         error, = exception.args
         self.printf("Error code = %s\n", error.code)
         self.printf("Error message = %s\n", error.message)
+
+'''
+Sort recipes by fat/calories/sugar/protein
+'''
+
+def sort_by_nutrient(self,choice=0,nutrichoice=0):
+    recipe_fat = []
+    recipe_calories = []
+    recipe_sugar = []
+    recipe_protein = []
+    try:
+        connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+    except:
+        print('Error: Could not connect to database')
+    else:
+        print('Connected to Oracle successfully')
+        cur = connection.cursor()
+        if choice == 1:
+            if nutrichoice == 1:
+                cur.execute(sort.sort_calories_vegan())
+                for result in cur:
+                    recipe_calories.append(result)
+                return recipe_calories
+            elif nutrichoice == 2:
+                cur.execute(sort.sort_fat_vegan())
+                for result in cur:
+                    recipe_fat.append(result)
+                return recipe_fat
+            elif nutrichoice == 3:
+                cur.execute(sort.sort_sugar_vegan())
+                for result in cur:
+                    recipe_sugar.append(result)
+                return recipe_sugar
+            elif nutrichoice == 4:
+                cur.execute(sort.sort_protein_vegan())
+                for result in cur:
+                    recipe_sugar.append(result)
+                return recipe_protein
+        elif choice == 2:
+            if nutrichoice == 1:
+                cur.execute(sort.sort_calories_vegetarian())
+                for result in cur:
+                    recipe_calories.append(result)
+                return recipe_calories
+            elif nutrichoice == 2:
+                cur.execute(sort.sort_fat_vegetarian())
+                for result in cur:
+                    recipe_fat.append(result)
+                return recipe_fat
+            elif nutrichoice == 3:
+                cur.execute(sort.sort_sugar_vegetarian())
+                for result in cur:
+                    recipe_sugar.append(result)
+                return recipe_sugar
+            elif nutrichoice == 4:
+                cur.execute(sort.sort_protein_vegetarian())
+                for result in cur:
+                    recipe_sugar.append(result)
+                return recipe_protein
+        elif choice == 3:
+            if nutrichoice == 1:
+                cur.execute(sort.sort_calories_paleo())
+                for result in cur:
+                    recipe_calories.append(result)
+                return recipe_calories
+            elif nutrichoice == 2:
+                cur.execute(sort.sort_fat_paleo())
+                for result in cur:
+                    recipe_fat.append(result)
+                return recipe_fat
+            elif nutrichoice == 3:
+                cur.execute(sort.sort_sugar_paleo())
+                for result in cur:
+                    recipe_sugar.append(result)
+                return recipe_sugar
+            elif nutrichoice == 4:
+                cur.execute(sort.sort_protein_paleo())
+                for result in cur:
+                    recipe_sugar.append(result)
+                return recipe_protein
+
+
 
 
 
