@@ -1,6 +1,6 @@
 '''
     File name: server_interface.py
-    Author: Chu Wang
+    Author: Chu Wang, Rom Valme
     Date Created: 3/10/2018
     Date last modified: 3/29/2018
     Python Version:3.6
@@ -33,15 +33,19 @@ class ServerInterface(Singleton):
 
 
 
-    def insert_order(self):
+    def insert_order(self, recipe_requests):
+        '''
+        This function inserts an order into the CanRequest table
+        showing that the customer has made an
+        an order request
+        recipe_request is a list of tuples
+        '''
         try:
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except cx_Oracle.DatabaseError as exception:
             self.printf('Failed to connect to %s\n', self.__database)
         else:
             #print('-------Connected to Oracle successfully--------')
-            recipe_requests = [ ("R03", "C01", 1),
-                                ("R02", "C01", 2) ]
 
 
             cur = connection.cursor()
