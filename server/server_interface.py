@@ -28,8 +28,8 @@ class ServerInterface(Singleton):
       '''
     def __init__(self):
         self.__database = 'oracle.wpi.edu'
-        self.__username = 'cwang9'
-        self.__password = 'CWANG9'
+        self.__username = 'rsvalme'
+        self.__password = 'RSVALME'
 
 
 
@@ -39,6 +39,7 @@ class ServerInterface(Singleton):
         chef= []
 
         try:
+            import pdb;pdb.set_trace()
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except cx_Oracle.DatabaseError as exception:
             self.printf('Failed to connect to %s\n', self.__database)
@@ -87,7 +88,7 @@ class ServerInterface(Singleton):
             connection.close()
             #print("-------Connection closed-------")
             recipes = dao_recipe.add_to_recipes(recipes,ingredients)
-            
+
             return recipes
 
 
@@ -97,7 +98,7 @@ class ServerInterface(Singleton):
     def get_ingredient_in_recipe(self):
         ingredients_in_recipes = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -116,7 +117,7 @@ class ServerInterface(Singleton):
     def get_ingredients(self):
         ingredients = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -141,7 +142,7 @@ class ServerInterface(Singleton):
 
 
 '''
-connection = cx_Oracle.connect('cwang9','CWANG9',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
+connection = cx_Oracle.connect('rsvalme','RSVALME',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
 #type in your own username and password
 cur = connection.cursor()
 cur.execute()
