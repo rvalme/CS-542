@@ -33,13 +33,29 @@ class ServerInterface(Singleton):
 
 
 
+    def insert_order(self):
+        try:
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except cx_Oracle.DatabaseError as exception:
+            self.printf('Failed to connect to %s\n', self.__database)
+        else:
+            #print('-------Connected to Oracle successfully--------')
+            recipe_requests = [ ("R03", "C01", 1),
+                                ("R02", "C01", 2) ]
+
+
+            cur = connection.cursor()
+            cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
+            connection.commit()
+            cur.close()
+            connection.close()
+
     def get_recipes(self, choice=0):
         recipes = []
         ingredients = []
         chef= []
 
         try:
-            import pdb;pdb.set_trace()
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except cx_Oracle.DatabaseError as exception:
             self.printf('Failed to connect to %s\n', self.__database)
