@@ -1,6 +1,6 @@
 '''
     File name: server_interface.py
-    Author: Chu Wang, Rom Valme
+    Author: Chu Wang
     Date Created: 3/10/2018
     Date last modified: 3/29/2018
     Python Version:3.6
@@ -30,31 +30,10 @@ class ServerInterface(Singleton):
       '''
     def __init__(self):
         self.__database = 'oracle.wpi.edu'
-        self.__username = 'rsvalme'
-        self.__password = 'RSVALME'
+        self.__username = 'cwang9'
+        self.__password = 'CWANG9'
 
 
-
-    def insert_order(self, recipe_requests):
-        '''
-        This function inserts an order into the CanRequest table
-        showing that the customer has made an
-        an order request
-        recipe_request is a list of tuples
-        '''
-        try:
-            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
-        except cx_Oracle.DatabaseError as exception:
-            self.printf('Failed to connect to %s\n', self.__database)
-        else:
-            #print('-------Connected to Oracle successfully--------')
-
-
-            cur = connection.cursor()
-            cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
-            connection.commit()
-            cur.close()
-            connection.close()
 
     def get_recipes(self, choice=0):
         recipes = []
@@ -110,7 +89,7 @@ class ServerInterface(Singleton):
             connection.close()
             #print("-------Connection closed-------")
             recipes = dao_recipe.add_to_recipes(recipes,ingredients)
-
+            
             return recipes
 
 
@@ -120,7 +99,7 @@ class ServerInterface(Singleton):
     def get_ingredient_in_recipe(self):
         ingredients_in_recipes = []
         try:
-            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -139,7 +118,7 @@ class ServerInterface(Singleton):
     def get_ingredients(self):
         ingredients = []
         try:
-            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -238,7 +217,7 @@ class ServerInterface(Singleton):
                         recipe_sugar.append(result)
                     return recipe_protein
 
-    def select_exclude(self,dtype, ingred):
+    def select_exclude(self,choice, ingred):
         exclude = []
         try:
             connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
@@ -247,13 +226,30 @@ class ServerInterface(Singleton):
         else:
             print('Connected to Oracle successfully')
             cur = connection.cursor()
-            cur.execute(limitchoice.exclude_ingredient(dtype,ingred))
-            for result in cur:
-                exclude.append(result)
-        return exclude
+            if choice == 1:
+                cur.execute(limitchoice.exclude_ingredient_vegan(ingred))
+                for result in cur:
+                    exclude.append(result)
+                return exclude
+            elif choice == 2:
+                cur.execute(limitchoice.exclude_ingredient_vegetarian(ingred))
+                for result in cur:
+                    exclude.append(result)
+                return exclude
+            elif choice == 3:
+                cur.execute(limitchoice.exclude_ingredient_paleo(ingred))
+                for result in cur:
+                    exclude.append(result)
+                return exclude
 
-    def select_limitation(self,dtype, quant):
-        limit = []
+
+
+'''
+    def select_limitation(self,choice,nutrichoice, quant):
+        recipe_fat = []
+        recipe_calories = []
+        recipe_sugar = []
+        recipe_protein = []
         try:
             connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
@@ -261,24 +257,72 @@ class ServerInterface(Singleton):
         else:
             print('Connected to Oracle successfully')
             cur = connection.cursor()
-            cur.execute(limitchoice.nutrient_limit(dtype,quant))
-            for result in cur:
-                limit.append(result)
-        return limit
-
-
-
-
-
+            if choice == 1:
+                if nutrichoice == 1:
+                    cur.execute(limitchoice.nutrient_limit_vegan_calories(quant))
+                    for result in cur:
+                        recipe_calories.append(result)
+                    return recipe_calories
+                elif nutrichoice == 2:
+                    cur.execute(limitchoice.nutrient_limit_vegan_fat(quant))
+                    for result in cur:
+                        recipe_fat.append(result)
+                    return recipe_fat
+                elif nutrichoice == 3:
+                    cur.execute(limitchoice.nutrient_limit_vegan_sugar(quant))
+                    for result in cur:
+                        recipe_sugar.append(result)
+                    return recipe_sugar
+                elif nutrichoice == 4:
+                    cur.execute(limitchoice.nutrient_limit_vegan_protein(quant))
+                    for result in cur:
+                        recipe_sugar.append(result)
+                    return recipe_protein
+            elif choice == 2:
+                if nutrichoice == 1:
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_calories(quant))
+                    for result in cur:
+                        recipe_calories.append(result)
+                    return recipe_calories
+                elif nutrichoice == 2:
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_fat(quant))
+                    for result in cur:
+                        recipe_fat.append(result)
+                    return recipe_fat
+                elif nutrichoice == 3:
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_sugar(quant))
+                    for result in cur:
+                        recipe_sugar.append(result)
+                    return recipe_sugar
+                elif nutrichoice == 4:
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_protein(quant))
+                    for result in cur:
+                        recipe_sugar.append(result)
+                    return recipe_protein
+            elif choice == 3:
+                if nutrichoice == 1:
+                    cur.execute(limitchoice.nutrient_limit_paleo_calories(quant))
+                    for result in cur:
+                        recipe_calories.append(result)
+                    return recipe_calories
+                elif nutrichoice == 2:
+                    cur.execute(limitchoice.nutrient_limit_paleo_fat(quant))
+                    for result in cur:
+                        recipe_fat.append(result)
+                    return recipe_fat
+                elif nutrichoice == 3:
+                    cur.execute(limitchoice.nutrient_limit_paleo_sugar(quant))
+                    for result in cur:
+                        recipe_sugar.append(result)
+                    return recipe_sugar
+                elif nutrichoice == 4:
+                    cur.execute(limitchoice.nutrient_limit_paleo_protein(quant))
+                    for result in cur:
+                        recipe_sugar.append(result)
+                    return recipe_protein
 '''
-connection = cx_Oracle.connect('rsvalme','RSVALME',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
-#type in your own username and password
-cur = connection.cursor()
-cur.execute()
-#cur.execute('SELECT * FROM MakesUp')
-for result in cur:
-    print(result)
 
-cur.close()
-connection.close()
-'''
+
+
+
+
