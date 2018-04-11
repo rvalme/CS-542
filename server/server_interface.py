@@ -142,10 +142,11 @@ class ServerInterface(Singleton):
 
 
     def sort_by_nutrient(self,choice=0,nutrichoice=0):
-        recipe_fat = []
-        recipe_calories = []
-        recipe_sugar = []
-        recipe_protein = []
+        recipe = []
+        #recipe_calories = []
+        #recipe_sugar = []
+        #recipe_protein = []
+        ingredient = []
         try:
             connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
@@ -157,68 +158,72 @@ class ServerInterface(Singleton):
                 if nutrichoice == 1:
                     cur.execute(sort.sort_calories_vegan())
                     for result in cur:
-                        recipe_calories.append(result)
-                    return recipe_calories
+                        recipe.append(result)
+                    #return recipe_calories
                 elif nutrichoice == 2:
                     cur.execute(sort.sort_fat_vegan())
                     for result in cur:
-                        recipe_fat.append(result)
-                    return recipe_fat
+                        recipe.append(result)
+                    #return recipe_fat
                 elif nutrichoice == 3:
                     cur.execute(sort.sort_sugar_vegan())
                     for result in cur:
-                        recipe_sugar.append(result)
-                    return recipe_sugar
+                        recipe.append(result)
+                    #return recipe_sugar
                 elif nutrichoice == 4:
                     cur.execute(sort.sort_protein_vegan())
                     for result in cur:
-                        recipe_sugar.append(result)
-                    return recipe_protein
+                        recipe.append(result)
+                    #return recipe_protein
             elif choice == 2:
                 if nutrichoice == 1:
                     cur.execute(sort.sort_calories_vegetarian())
                     for result in cur:
-                        recipe_calories.append(result)
-                    return recipe_calories
+                        recipe.append(result)
+                    #return recipe_calories
                 elif nutrichoice == 2:
                     cur.execute(sort.sort_fat_vegetarian())
                     for result in cur:
-                        recipe_fat.append(result)
-                    return recipe_fat
+                        recipe.append(result)
+                    #return recipe_fat
                 elif nutrichoice == 3:
                     cur.execute(sort.sort_sugar_vegetarian())
                     for result in cur:
-                        recipe_sugar.append(result)
-                    return recipe_sugar
+                        recipe.append(result)
+                    #return recipe_sugar
                 elif nutrichoice == 4:
                     cur.execute(sort.sort_protein_vegetarian())
                     for result in cur:
-                        recipe_sugar.append(result)
-                    return recipe_protein
+                        recipe.append(result)
+                    #return recipe_protein
             elif choice == 3:
                 if nutrichoice == 1:
                     cur.execute(sort.sort_calories_paleo())
                     for result in cur:
-                        recipe_calories.append(result)
-                    return recipe_calories
+                        recipe.append(result)
+                    #return recipe_calories
                 elif nutrichoice == 2:
                     cur.execute(sort.sort_fat_paleo())
                     for result in cur:
-                        recipe_fat.append(result)
-                    return recipe_fat
+                        recipe.append(result)
+                    #return recipe_fat
                 elif nutrichoice == 3:
                     cur.execute(sort.sort_sugar_paleo())
                     for result in cur:
-                        recipe_sugar.append(result)
-                    return recipe_sugar
+                        recipe.append(result)
+                    #return recipe_sugar
                 elif nutrichoice == 4:
                     cur.execute(sort.sort_protein_paleo())
                     for result in cur:
-                        recipe_sugar.append(result)
-                    return recipe_protein
+                        recipe.append(result)
+                    #return recipe_protein
+            recipe = dao_recipe.add_to_recipes(recipe,ingredient)
+
+            return recipe
 
     def select_exclude(self,choice, ingred):
         exclude = []
+        ingredient = []
         try:
             connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
@@ -230,17 +235,19 @@ class ServerInterface(Singleton):
                 cur.execute(limitchoice.exclude_ingredient_vegan(ingred))
                 for result in cur:
                     exclude.append(result)
-                return exclude
+                #return exclude
             elif choice == 2:
                 cur.execute(limitchoice.exclude_ingredient_vegetarian(ingred))
                 for result in cur:
                     exclude.append(result)
-                return exclude
+                #return exclude
             elif choice == 3:
                 cur.execute(limitchoice.exclude_ingredient_paleo(ingred))
                 for result in cur:
                     exclude.append(result)
-                return exclude
+                #return exclude
+            exclude = dao_recipe.add_to_recipes(exclude,ingredient)
+            return exclude
 
 
 
