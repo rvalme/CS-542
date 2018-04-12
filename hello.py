@@ -26,12 +26,13 @@ import itertools
 def search_recipes():
     server_interface=ServerInterface()
     #a = request.args.get('a', 0, type=str)
-    a = request.form['diet_t']
+    #a = request.form['diet_t']
+    a = request.form.getlist('diet')[0]
     import pdb;pdb.set_trace()
     if(a == 'Vegan'):
         diet_number = 1
         recipes = server_interface.get_recipes(choice=diet_number)
-        return jsonify(result=recipes)
+        return jsonify(result=[recipe.__dict__ for recipe in recipes])
     elif (a == 'Vegetarian'):
         diet_number = 2
         recipes = server_interface.get_recipes(choice=diet_number)
@@ -64,9 +65,10 @@ def main():
             log_in = False
         else:
             recipes = server_interface.get_recipes(choice=diet_number)
+
             print(recipes)
 
 if __name__ == '__main__':
-    main()
-    app.run()
+    #main()
+    app.run(debug=True)
 

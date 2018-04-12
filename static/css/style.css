@@ -6,6 +6,22 @@ html, body{
 p{
 	margin:0;
 }
+
+.align div{
+    float: left;
+}
+
+.clear_left div{
+    clear: left;
+}
+'''
+
+.col2 .checkbox div{
+
+}
+.diet_color p{
+    color: #ffffff;
+}
 h1,h2,h3,h4,h5,h6{
 	font-family: 'Oleo Script', cursive;
 	font-weight:100;

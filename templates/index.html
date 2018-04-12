@@ -77,16 +77,66 @@
 				<div class="logo animated wow bounceInDown" data-wow-duration="1000ms" data-wow-delay="500ms">
 					<h1><a href="index.html"><span>100% Healthy</span>Best Recipes</a></h1>
 				</div>
-				<div class="col-lg-12 in-gp-tb">
+				<div class="col-lg-7 in-gp-tb ">
+				<div class="clear_left align">
                       <form action="/_search_recipes" method="post">
-					        <div class="input-group">
+					        <div class="input-group diet_color">
+							   <p>Diet</p>
+                               <div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Vegan" ><p> Vegan</p></label>
+									</div>
+									<div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Vegetarian" ><p>Vegetarian</p></label>
+									</div>
+									<div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Paleo" ><p>Paleo</p></label>
+									</div> 
+									<div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Keto" ><p>Keto</p></label>
+									</div> 
+									<div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="All" ><p>All</p></label>
+									</div> 
+									  <input type="submit" class="form-control" name= "diet_s" value="Go!">
+                                <!--
 						      <input type="text" name= "diet_t" class="form-control" placeholder="Search for...">
 						       <span class="input-group-btn">
                               <input type="submit" class="form-control" name= "diet_s" value="Go!">
-						       </span>
+                              </span>
+                                --> 
 					        </div><!-- /input-group -->
                       </form>
-				         </div><!-- /.col-lg-6 -->
+					</div>
+				<div class="align">
+                      <form action="/_sort_recipes" method="post">
+					        <div class="input-group diet_color clear_left">
+							   <p>Diet</p>
+                               <div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Vegan" ><p> Vegan</p></label>
+									</div>
+									<div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Vegetarian" ><p>Vegetarian</p></label>
+									</div>
+									<div class="checkbox">
+									  <label><input type="checkbox" name="diet" value="Paleo" ><p>Paleo</p></label>
+									</div> 
+									<div class="checkbox col2">
+									  <label><input type="checkbox" name="diet" value="Keto" ><p>Keto</p></label>
+									</div> 
+									<div class="checkbox col2">
+									  <label><input type="checkbox" name="diet" value="All" ><p>All</p></label>
+									</div> 
+									  <input type="submit" class="form-control" name= "diet_s" value="Go!">
+                                <!--
+						      <input type="text" name= "diet_t" class="form-control" placeholder="Search for...">
+						       <span class="input-group-btn">
+                              <input type="submit" class="form-control" name= "diet_s" value="Go!">
+                              </span>
+                                --> 
+					        </div><!-- /input-group -->
+                      </form>
+					</div>
+				 </div><!-- /.col-lg-6 -->
 			</div>
 		</div>
 			<script>
