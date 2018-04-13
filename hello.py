@@ -22,6 +22,24 @@ from server.server_interface import ServerInterface
 from server.dao_recipe import DaoRecipe
 import itertools
 
+@app.route('/_without_ingredient', methods=['GET', 'POST'])
+def without_ingredient(name=None):
+    server_interface=ServerInterface()
+    #a = request.args.get('a', 0, type=str)
+    #a = request.form['diet_t']
+    a = request.form.getlist('without')[0]
+    return render_template('index.html', name=name)
+
+
+@app.route('/_sort_recipes', methods=['GET', 'POST'])
+def sort_recipes(name=None):
+    server_interface=ServerInterface()
+    #a = request.args.get('a', 0, type=str)
+    #a = request.form['diet_t']
+    import pdb;pdb.set_trace()
+    a = request.form.getlist('nutrients')[0]
+    return render_template('index.html', name=name)
+
 @app.route('/_search_recipes', methods=['GET', 'POST'])
 def search_recipes():
     server_interface=ServerInterface()

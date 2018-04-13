@@ -7,12 +7,34 @@ p{
 	margin:0;
 }
 
-.align div{
+.subm div{
+    width: 30%
+}
+.align_left div{
+    width: 40%;
     float: left;
+}
+
+.align_left2 div{
+    width: 35%;
+    float: left;
+}
+
+.align_left3 div{
+    width: 25%;
+    float: left;
+}
+
+.align_center div{
+    float: center;
 }
 
 .clear_left div{
     clear: left;
+}
+
+.clear_center div{
+    clear: center;
 }
 '''
 
