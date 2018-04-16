@@ -53,7 +53,7 @@ class Recipe:
 
     @fat.setter
     def fat(self, fat):
-        self.__sugar = fat
+        self.__fat = fat
 
     @property
     def protein(self):
@@ -130,6 +130,7 @@ class Recipe:
                "price: {8}$, ingredients:{9}, chef:{10}\n".format(self.__recipe_id, self.__recipe_name, self.__calories,
                 self.__carbs, self.__sugar, self.__fat, self.__protein,
                 self.__sodium,self.__price, self.__ingredients, self.__chef)
+
 
     def to_string(self):
         return print(repr(self))

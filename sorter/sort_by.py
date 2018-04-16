@@ -5,5 +5,5 @@
     Date last modified: 3/22/2018
     Python Version:3.6
 '''
+import operator
 class SortBy():
-    pass

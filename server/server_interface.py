@@ -11,6 +11,8 @@ from server.query_factory import QueryFactory as query_factory
 from server.dao_recipe import DaoRecipe as dao_recipe
 from server.sort_by import SortBy as sort
 from server.limitation_choice import limitchoice
+from recipe.recipe import Recipe
+import time
 
 class Singleton(object):
     '''
@@ -32,29 +34,50 @@ class ServerInterface(Singleton):
         self.__database = 'oracle.wpi.edu'
         self.__username = 'rsvalme'
         self.__password = 'RSVALME'
+        #self.__username = 'cwang9'
+        #self.__password = 'CWANG9'
 
 
 
-    def insert_order(self, recipe_requests):
+    def insert_order(self, recipe_requests, recipes, recipe_id, customer_id):
         '''
         This function inserts an order into the CanRequest table
         showing that the customer has made an
         an order request
         recipe_request is a list of tuples
         '''
+        ingrd_tuple_sql_list = self.decrement_ingrd(recipe_id, recipes)
         try:
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except cx_Oracle.DatabaseError as exception:
             self.printf('Failed to connect to %s\n', self.__database)
         else:
             #print('-------Connected to Oracle successfully--------')
-
-
             cur = connection.cursor()
-            cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
+            self.update_customer(customer_id)
+           # cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
+            #Execute a list of sql because cx_oracle will only take 1 parameter
+            for i in range(len(ingrd_tuple_sql_list[1])):
+                cur.execute(ingrd_tuple_sql_list[1][i], q=ingrd_tuple_sql_list[0][i])
             connection.commit()
             cur.close()
             connection.close()
+    def update_customer(self, customer_id):
+        pass
+
+    def decrement_ingrd(self,recipe_id, recipes):
+        ordered_recipe = Recipe()
+        for recipe in recipes:
+            if recipe.recipe_id == rid:
+                ordered_recipe = recipe
+                break
+        ingrd_tuple_list=[]
+        ingrd_sql_list=[]
+        for n, q in ordered_recipe.ingredients.items():
+            ingrd_tuple_list.append((q))
+            ingrd_sql_list.append("UPDATE Ingredient I SET I.QUANTITY = I.QUANTITY - :q WHERE I.INAME ='" + n + "'")
+        return ingrd_tuple_list, ingrd_sql_list
+
 
     def get_recipes(self, choice=0):
         recipes = []
@@ -76,6 +99,9 @@ class ServerInterface(Singleton):
                 cur.execute(query_factory.get_vegan_ingredients())
                 for result in cur:
                     ingredients.append(result)
+                cur.execute(query_factory.get_chef_info())
+                for result in cur:
+                    chef.append(result)
             #Customer chooses Vegetarian
             elif choice == 2:
                 cur.execute(query_factory.get_vegetarian_recipes())
@@ -84,6 +110,9 @@ class ServerInterface(Singleton):
                 cur.execute(query_factory.get_vegetarian_ingredients())
                 for result in cur:
                     ingredients.append(result)
+                cur.execute(query_factory.get_chef_info())
+                for result in cur:
+                    chef.append(result)
             #Customer chooses Paleo
             elif choice == 3:
                 cur.execute(query_factory.get_paleo_recipes())
@@ -92,8 +121,20 @@ class ServerInterface(Singleton):
                 cur.execute(query_factory.get_paleo_ingredients())
                 for result in cur:
                     ingredients.append(result)
+                cur.execute(query_factory.get_chef_info())
+                for result in cur:
+                    chef.append(result)
             #Customer chooses Keto
-            #No data, implements later
+            elif choice == 4:
+                cur.execute(query_factory.get_keto_recipes())
+                for result in cur:
+                    recipes.append(result)
+                cur.execute(query_factory.get_keto_ingredients())
+                for result in cur:
+                    ingredients.append(result)
+                cur.execute(query_factory.get_chef_info())
+                for result in cur:
+                    chef.append(result)
 
 
             #Return the entire list of recipes
@@ -104,12 +145,14 @@ class ServerInterface(Singleton):
                 cur.execute(query_factory.get_ingredients_in_recipe())
                 for result in cur:
                     ingredients.append(result)
-
+                cur.execute(query_factory.get_chef_info())
+                for result in cur:
+                    chef.append(result)
 
             cur.close()
             connection.close()
             #print("-------Connection closed-------")
-            recipes = dao_recipe.add_to_recipes(recipes,ingredients)
+            recipes = dao_recipe.add_to_recipes(recipes,ingredients,chef)
 
             return recipes
 
@@ -120,7 +163,7 @@ class ServerInterface(Singleton):
     def get_ingredient_in_recipe(self):
         ingredients_in_recipes = []
         try:
-            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -139,7 +182,7 @@ class ServerInterface(Singleton):
     def get_ingredients(self):
         ingredients = []
         try:
-            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -168,7 +211,7 @@ class ServerInterface(Singleton):
         recipe_sugar = []
         recipe_protein = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -241,7 +284,7 @@ class ServerInterface(Singleton):
     def select_exclude(self,dtype, ingred):
         exclude = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -255,7 +298,7 @@ class ServerInterface(Singleton):
     def select_limitation(self,dtype, quant):
         limit = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:

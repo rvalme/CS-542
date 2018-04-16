@@ -1201,7 +1201,12 @@ INSERT
 INTO MakesUp(INAME, RID, Amount)
 VALUES('Mozzarella pearls', 'R16', 6);
 
+commit;
+
 
 SELECT * from Recipe;
 SELECT * from MakesUp;
-SELECT * from Ingredient;
+SELECT * from Ingredient; 
+Select * FRom MakesInstanceof;
+select * from SubscribesTo;
+select * from CanRequest;

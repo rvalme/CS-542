@@ -34,6 +34,11 @@ class QueryFactory:
         (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Paleolithic')"
 
     @staticmethod
+    def get_keto_recipes():
+        return "SELECT * FROM Recipe R WHERE R.RID IN \
+        (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Ketogenic')"
+
+    @staticmethod
     def get_vegan_ingredients():
         return "SELECT * FROM MakesUp M WHERE M.RID IN  \
                (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Vegan')"
@@ -47,5 +52,24 @@ class QueryFactory:
     def get_paleo_ingredients():
         return "SELECT * FROM MakesUp M WHERE M.RID IN \
                (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Paleolithic')"
+
+    @staticmethod
+    def get_keto_ingredients():
+        return "SELECT * FROM MakesUp M WHERE M.RID IN \
+               (SELECT S.RID FROM SubscribesTO S WHERE S.Type_of_diet = 'Ketogenic')"
+
+
+    @staticmethod
+    def get_chef_info():
+       return "SELECT * FROM MakesInstanceof"
+
+    @staticmethod
+    def update_ingrd_table(ingrd, qty):
+        a= "UPDATE Ingredient I SET I.QUANTITY = C.QUANTITY - "
+        b= str(qty)
+        c= "WHERE I.INAME ="
+        d= str(ingrd)
+        return a+b+c+d
+
 
 
