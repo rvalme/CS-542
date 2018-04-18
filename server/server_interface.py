@@ -32,6 +32,23 @@ class ServerInterface(Singleton):
         self.__password = 'RSVALME'
 
 
+    def update_order(self):
+        try:
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except cx_Oracle.DatabaseError as exception:
+            self.printf('Failed to connect to %s\n', self.__database)
+        else:
+            #print('-------Connected to Oracle successfully--------')
+
+
+            cur = connection.cursor()
+            statement = "update Ingredient I set I.quantity = (I.quantity - :1) where I.iname = 'Carrot'"
+            #cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
+            cur.execute(statement, (1, ))
+            connection.commit()
+            cur.close()
+            connection.close()
+
 
     def insert_order(self, recipe_requests):
         '''
@@ -53,6 +70,42 @@ class ServerInterface(Singleton):
             connection.commit()
             cur.close()
             connection.close()
+
+    def get_rid(self, rname):
+        try:
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except cx_Oracle.DatabaseError as exception:
+            self.printf('Failed to connect to %s\n', self.__database)
+        else:
+            cur =connection.cursor()
+            cur.execute("SELECT R.RID FROM Recipe R WHERE R.RNAME = '" + rname + "'")
+            rid = cur.fetchall()[0][0].strip();
+            cur.close()
+            connection.close()
+            return rid
+    def get_recipe(self, rname):
+        ingredients = []
+        chef= []
+
+        try:
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except cx_Oracle.DatabaseError as exception:
+            self.printf('Failed to connect to %s\n', self.__database)
+        else:
+            #print('-------Connected to Oracle successfully--------')
+            cur =connection.cursor()
+            #Customer chooses Vegan
+            cur.execute("SELECT * FROM Recipe R WHERE R.RNAME = '" + rname + "'")
+            recipe = cur.fetchall()[0];
+            cur.execute("SELECT * FROM MakesUp M WHERE M.RID IN \
+                           (SELECT R.RID FROM Recipe R WHERE R.RNAME = '" + rname + "')")
+            for result in cur.fetchall():
+                ingredients.append(result);
+            cur.close()
+            connection.close()
+            #print("-------Connection closed-------")
+            r_out = dao_recipe.build_recipe(recipe, ingredients)
+            return r_out
 
     def get_recipes(self, choice=0):
         recipes = []

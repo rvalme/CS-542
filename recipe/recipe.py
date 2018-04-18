@@ -21,6 +21,7 @@ class Recipe:
         self.__carbs = 0
         self.__price = 0
         self.__ingredients = {}
+        self.__image = ''
         self.__chef = None
 
     @property
@@ -53,7 +54,7 @@ class Recipe:
 
     @fat.setter
     def fat(self, fat):
-        self.__sugar = fat
+        self.__fat = fat
 
     @property
     def protein(self):

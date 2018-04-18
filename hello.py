@@ -11,7 +11,7 @@ from flask import request,jsonify
 import os
 
 app = Flask(__name__)
-
+img_name = {'Spicy Kale Slaw': 'K.jpg', 'Black-eyed Pea Fritters': 'B.jpg', 'Green Goddess Hummus': 'GG.jpg', 'Vegan Garlic Bread': 'GB.jpg', 'Kale Chips': 'KC.jpg', 'Chorizo Stuffed Jalapenos': 'CSJ.jpg', 'Chocolate Walnut Date Balls': 'CWDB.jpg', 'Olive Oil Mashed Cauliflower': 'O.jpg'}
 
 @app.route('/')
 def home(name=None):
@@ -30,23 +30,46 @@ def without_ingredient(name=None):
     a = request.form.getlist('without')[0]
     return render_template('index.html', name=name)
 
+@app.route('/_submit_order', methods=['GET', 'POST'])
+def submit_order(name=None):
+    server_interface=ServerInterface()
+    #a = request.form['diet_t']
+    quantity = request.args.get('quantity', 0, type=str)
+    recipe = request.args.get('recipe', 0, type=str)
+    cid = request.args.get('cid', 0, type=str)
+    rid = server_interface.get_rid(recipe)
+    recipe_tuple = [(rid, cid, quantity)]
+    server_interface.insert_order(recipe_tuple)
+    return jsonify(img_name)
+
 
 @app.route('/_sort_recipes', methods=['GET', 'POST'])
 def sort_recipes(name=None):
     server_interface=ServerInterface()
     #a = request.args.get('a', 0, type=str)
     #a = request.form['diet_t']
-    import pdb;pdb.set_trace()
     a = request.form.getlist('nutrients')[0]
     return render_template('index.html', name=name)
+
+@app.route('/_select_recipes', methods=['GET', 'POST'])
+def select_recipes(name=None):
+    server_interface=ServerInterface()
+    #a = request.args.get('a', 0, type=str)
+    rname = request.form['recipe']
+    recipe = server_interface.get_recipe(rname)
+    recipe_dict = recipe.__dict__
+    recipe_dict['_Recipe__img_name'] = img_name[rname]
+    return render_template('selected_recipe.html', summary=recipe_dict)
+    #a = request.form['recipe']
+    #return a;
 
 @app.route('/_search_recipes', methods=['GET', 'POST'])
 def search_recipes():
     server_interface=ServerInterface()
     #a = request.args.get('a', 0, type=str)
     #a = request.form['diet_t']
-    a = request.form.getlist('diet')[0]
-    import pdb;pdb.set_trace()
+    #import pdb;pdb.set_trace()
+    a = request.args.get('diet')
     if(a == 'Vegan'):
         diet_number = 1
         recipes = server_interface.get_recipes(choice=diet_number)

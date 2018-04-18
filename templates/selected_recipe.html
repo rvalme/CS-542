@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="CS542-DataBase" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- js -->
+<script src="static/js/jquery-1.11.1.min.js"></script>
+<!-- //js -->
+<!-- animation-effect -->
+<link href="static/css/animate.min.css" rel="stylesheet"> 
+<script src="static/js/wow.min.js"></script>
+<script>
+ new WOW().init();
+</script>
+<!-- //animation-effect -->
+<link href='https://fonts.googleapis.com/css?family=Oleo+Script:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+<!-- start-smooth-scrolling -->
+<script type="text/javascript" src="static/js/move-top.js"></script>
+<script type="text/javascript" src="static/js/easing.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smooth-scrolling -->
+</head>
+	
+<body>
+<!-- banner -->
+	<div class="banner-figures">
+		<div class="banner1">
+			<div class="container banner-drop">
+				<div class="header header1">
+					<div class="header-left">
+						<ul>
+							<li class="animated wow fadeInLeftBig" data-wow-duration="1200ms" data-wow-delay="800ms"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 100 Institute Road,Worcester,MA </li>
+							<li class="animated wow fadeInLeftBig" data-wow-duration="1200ms" data-wow-delay="900ms"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> CS542-Group-8</li>
+							
+						</ul>
+					</div>
+					<div class="header-right header-right1">
+						<nav>
+						  <ul>
+							<li>
+								<a href="/"><i class="glyphicon glyphicon-home" aria-hidden="true"></i><span>Home</span></a>
+							</li>
+							<li class="active">
+								<a href="about.html"><i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i><span>About</span></a>
+							</li>
+							<li>
+								<a href="short-codes.html"><i class="glyphicon glyphicon-text-size" aria-hidden="true"></i><span>Short Codes</span></a>
+							</li>
+							<li>
+								<a href="blog.html"><i class="glyphicon glyphicon-picture" aria-hidden="true"></i><span>Blog</span></a>
+							</li>
+							<li>
+								<a href="mail.html"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><span>Mail Us</span></a>
+							</li>
+						  </ul>
+						</nav>
+						<div class="menu-icon animated wow zoomIn" data-wow-duration="1000ms" data-wow-delay="800ms"><span></span></div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="logo animated wow bounceInDown" data-wow-duration="1000ms" data-wow-delay="500ms">
+					<h1><a href="/"><span>100% Healthy</span>Best Recipes</a></h1>
+				</div>
+                        <div class="mgn_right img_left align_left4">
+                            <h3 id="recipe_name">Recipe Name</h3>
+                            <h4 id="price">$10.00</h4>
+                            <div id="change_img" class="item item-sub1">
+                                    <div class="item1">
+                                        <center>
+                                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
+                                        </center>
+                                    </div>
+                            </div>
+                        </div>
+				<div class="align_left5 diet_color mgn_right">
+                    <div class="margin_bottom">
+                        <h2>Ingredients</h2>
+                        <ul id="ing">
+                        </ul>
+                    </div>
+                    <div class="margin_bottom">
+                        <h2>Nutrition</h2>
+                        <ul id="nutri" >
+                            <li class="nutr"><p>Protein</p></li>
+                            <li class="nutr"><p>Calories</p></li>
+                            <li class="nutr"><p>Carbs</p></li>
+                            <li class="nutr"><p>Sugar</p></li>
+                            <li class="nutr"><p>Sodium</p></li>
+                            <li class="nutr"><p>Fat</p></li>
+                        </ul>
+                    </div>
+                    <div class="margin_bottom">
+                        <h2>Chef</h2>
+                        <p>Chef 01</p>
+                    </div>
+                </div>
+
+				<div class="align_left4">
+					        <div class="input-group diet_color">
+							   <p>Quantity</p>
+									<select name="quantity">
+									<option  value="1">1</option>
+									<option  value="2">2</option>
+									<option  value="3">3</option>
+									<option  value="4">4</option>
+									<option  value="5">5</option>
+									</select>
+									  <input type="submit" id="submit_order" class="form-control" name= "quantity" value="Submit Order">
+					        </div><!-- /input-group -->
+				<div class="align_left4 diet_color" >
+                    <p id="text_hidden"> Order Submitted</p>
+                </div>
+                </div>
+			</div>
+		</div>
+			<script>
+				(function($){
+				  $(".menu-icon").on("click", function(){
+						$(this).toggleClass("open");
+						$(".container").toggleClass("nav-open");
+						$("nav ul li").toggleClass("animate");
+				  });
+				  var recipe = {{ summary|tojson|safe }};
+                  document.getElementById('change_img').style.backgroundImage='url(static/images/' + recipe._Recipe__img_name +')';
+                  var Recipe_Name = document.getElementById('recipe_name');
+                  var Ingredients = document.getElementById('ing');
+                  var Price = document.getElementById('price');
+                  var Nutrients = document.getElementsByClassName('nutr');
+                  for (var key in recipe._Recipe__ingredients) {
+                      var entry = document.createElement('li');
+                      entry.appendChild(document.createTextNode(key));
+                      Ingredients.appendChild(entry);
+                  }
+                  Recipe_Name.innerText= recipe._Recipe__recipe_name;
+                  Price.innerText='$' + recipe._Recipe__price;
+                  Nutrients[0].innerText= 'Protein: ' + recipe._Recipe__protein + 'g';
+                  Nutrients[1].innerText= 'Calories: ' + recipe._Recipe__calories + 'kcal';
+                  Nutrients[2].innerText= 'Carbs: ' + recipe._Recipe__carbs + 'g';
+                  Nutrients[3].innerText= 'Sugar: ' + recipe._Recipe__sugar + 'g';
+                  Nutrients[4].innerText= 'Sodium: ' + recipe._Recipe__sodium + 'mg';
+                  Nutrients[5].innerText= 'Fat: ' + recipe._Recipe__fat + 'g';
+                  document.getElementById('ing').style.color='#ffffff';
+                  document.getElementById('nutri').style.color='#ffffff';
+
+				  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+				  var submit_form = function(e) {
+                  $.getJSON($SCRIPT_ROOT + '/_submit_order', {
+                  quantity: $('select[name="quantity"]').val(),
+                  recipe: recipe._Recipe__recipe_name,
+                  cid: 'C01'
+                  }, function(data) {
+                      console.log("made it");
+                      document.getElementById('text_hidden').style.visibility='visible';
+                  });
+                  return false;
+                  }; 
+				  $('#submit_order').bind('click', submit_form);
+                  $('input[type=submit]').bind('keydown', function(e) {
+                        if (e.keyCode == 13) {
+                        submit_form(e);
+                        }
+                  });
+				})(jQuery);
+			</script>
+	</div>
+<!-- //banner -->
+<!-- banner-bottom 
+	<div class="banner1">
+	</div>
+	               --> 
+</body>
+</html>

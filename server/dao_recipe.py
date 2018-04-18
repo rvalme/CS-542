@@ -18,12 +18,12 @@ class DaoRecipe():
         #return a list of recipe object
         recipes = []
         for recipe_tuple in recipe_tuple_list:
-            recipes.append(DaoRecipe.__build_recipe(recipe_tuple, ingredient_tuple_list))
+            recipes.append(DaoRecipe.build_recipe(recipe_tuple, ingredient_tuple_list))
         return recipes
 
 
     @staticmethod
-    def __build_recipe(recipe_tuple,ingredient_tuple_list):
+    def build_recipe(recipe_tuple,ingredient_tuple_list):
         #pass in one tuple to __build_recipe to build one recipe object
         #instantiate recipe instance
         recipe_instance = Recipe()
@@ -49,10 +49,11 @@ class DaoRecipe():
             recipe_float_to_int.append(recipe_info_int)
         recipe_instance.recipe_id = recipe_tuple[0].rstrip()
         recipe_instance.recipe_name = recipe_tuple[1].rstrip()
-        recipe_instance.calories = recipe_float_to_int[0]
-        recipe_instance.fat = recipe_float_to_int[1]
-        recipe_instance.protein = recipe_float_to_int[2]
-        recipe_instance.sodium = recipe_float_to_int[3]
-        recipe_instance.sugar = recipe_float_to_int[4]
-        recipe_instance.carbs = recipe_float_to_int[5]
+        recipe_instance.carbs = recipe_float_to_int[0];
+        recipe_instance.sugar = recipe_float_to_int[1];
+        recipe_instance.fat = recipe_float_to_int[2];
+        recipe_instance.protein= recipe_float_to_int[3];
+        recipe_instance.calories =recipe_float_to_int[4];
+        recipe_instance.sodium = recipe_float_to_int[5];
         recipe_instance.price = recipe_tuple[8]
+

@@ -7,6 +7,42 @@ p{
 	margin:0;
 }
 
+/*
+.back button:active{
+	background:url(../images/8.jpg) no-repeat 0px 0px;
+}
+*/
+
+#text_hidden{
+    visibility: hidden;
+}
+.img_left div{
+	float: left;
+	width: 400px;
+}
+
+.mgn_right div{
+	margin-right: 40px;
+
+}
+.item .btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #f1f1f1;
+    color: black;
+    font-size: 16px;
+    padding: 16px 30px;
+    width: 100%;
+    height:100%;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    background:transparent;
+}
 .subm div{
     width: 30%
 }
@@ -25,7 +61,14 @@ p{
     float: left;
 }
 
-.align_center div{
+.align_left4 div{
+    float: left;
+}
+
+.align_left5{
+    float: left;
+}
+.align_center{
     float: center;
 }
 
@@ -33,14 +76,17 @@ p{
     clear: left;
 }
 
+.margin_left{
+    margin-left: 40px;
+}
+.margin_bottom{
+    margin-bottom: 40px;
+}
+
 .clear_center div{
     clear: center;
 }
-'''
 
-.col2 .checkbox div{
-
-}
 .diet_color p{
     color: #ffffff;
 }
@@ -48,6 +94,7 @@ h1,h2,h3,h4,h5,h6{
 	font-family: 'Oleo Script', cursive;
 	font-weight:100;
 	margin:0;
+	color: #ffffff;
 }
 ul,label{
 	margin:0;
@@ -442,6 +489,7 @@ padding: 70px 0 165px 0;
 .item-sub{
 	background:url(../images/K.jpg) no-repeat 0px 0px;
 	background-size:cover;
+/* comment out to modify image */
 	-webkit-background-size:cover;
 	-moz-background-size:cover;
 	-o-background-size:cover;
