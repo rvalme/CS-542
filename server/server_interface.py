@@ -11,6 +11,7 @@ from server.query_factory import QueryFactory as query_factory
 from server.dao_recipe import DaoRecipe as dao_recipe
 from server.sort_by import SortBy as sort
 from server.limitation_choice import limitchoice
+import numpy as np
 
 class Singleton(object):
     '''
@@ -30,8 +31,18 @@ class ServerInterface(Singleton):
       '''
     def __init__(self):
         self.__database = 'oracle.wpi.edu'
-        self.__username = 'cwang9'
-        self.__password = 'CWANG9'
+        self.__username = 'hwang10'
+        self.__password = 'HWANG10'
+
+    def make_tuple(self,tuples,row,column):
+        array = []
+        for i in range (row):
+            for j in range (column):
+                array[i].append(tuples[i+j])
+        return array
+
+
+
 
 
 
@@ -84,12 +95,20 @@ class ServerInterface(Singleton):
                 for result in cur:
                     ingredients.append(result)
 
+            elif choice == 4:
+                cur.execute(query_factory.get_keto_recipes())
+                for result in cur:
+                    recipes.append(result)
+                cur.execute(query_factory.get_keto_ingredients())
+                for result in cur:
+                    ingredients.append(result)
+
 
             cur.close()
             connection.close()
             #print("-------Connection closed-------")
             recipes = dao_recipe.add_to_recipes(recipes,ingredients)
-            
+            #recipe = np.c_[recipes,ingredients]
             return recipes
 
 
@@ -99,7 +118,7 @@ class ServerInterface(Singleton):
     def get_ingredient_in_recipe(self):
         ingredients_in_recipes = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect('hwang10', 'HWANG10', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -118,7 +137,7 @@ class ServerInterface(Singleton):
     def get_ingredients(self):
         ingredients = []
         try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect('hwang10', 'HWANG10', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
@@ -141,7 +160,144 @@ class ServerInterface(Singleton):
         self.printf("Error message = %s\n", error.message)
 
 
+
+
+
+    def select_exclude(self,choice, ingred):
+        exclude = []
+        ingredient = []
+        try:
+            connection = cx_Oracle.connect('hwang10', 'HWANG10', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except:
+            print('Error: Could not connect to database')
+        else:
+            print('Connected to Oracle successfully')
+            cur = connection.cursor()
+            if choice == 1:
+                cur.execute(limitchoice.exclude_ingredient_vegan(ingred))
+                for result in cur:
+                    exclude.append(result)
+                cur.execute(limitchoice.ingredient_exclude_vegan(ingred))
+                for result in cur:
+                    ingredient.append(result)
+                #return exclude
+            elif choice == 2:
+                cur.execute(limitchoice.exclude_ingredient_vegetarian(ingred))
+                for result in cur:
+                    exclude.append(result)
+                cur.execute(limitchoice.ingredient_exclude_vegetarian(ingred))
+                for result in cur:
+                    ingredient.append(result)
+                #return exclude
+            elif choice == 3:
+                cur.execute(limitchoice.exclude_ingredient_paleo(ingred))
+                for result in cur:
+                    exclude.append(result)
+                cur.execute(limitchoice.ingredient_exclude_paleo(ingred))
+                for result in cur:
+                    ingredient.append(result)
+
+            elif choice == 4:
+                cur.execute(limitchoice.exclude_ingredient_keto(ingred))
+                for result in cur:
+                    exclude.append(result)
+                cur.execute(limitchoice.ingredient_exclude_keto(ingred))
+                for result in cur:
+                    ingredient.append(result)
+                #return exclude
+            exclude = dao_recipe.add_to_recipes(exclude,ingredient)
+            return exclude
+
+
+
+
+
+
+'''
     def sort_by_nutrient(self,choice=0,nutrichoice=0):
+        recipe = []
+        #recipe_calories = []
+        #recipe_sugar = []
+        #recipe_protein = []
+        ingredient = []
+        try:
+            connection = cx_Oracle.connect('hwang10', 'HWANG10', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except:
+            print('Error: Could not connect to database')
+        else:
+            print('Connected to Oracle successfully')
+            cur = connection.cursor()
+            if choice == 1:
+                if nutrichoice == 1:
+                    cur.execute(sort.sort_calories_vegan())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_calories
+                elif nutrichoice == 2:
+                    cur.execute(sort.sort_fat_vegan())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_fat
+                elif nutrichoice == 3:
+                    cur.execute(sort.sort_sugar_vegan())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_sugar
+                elif nutrichoice == 4:
+                    cur.execute(sort.sort_protein_vegan())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_protein
+            elif choice == 2:
+                if nutrichoice == 1:
+                    cur.execute(sort.sort_calories_vegetarian())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_calories
+                elif nutrichoice == 2:
+                    cur.execute(sort.sort_fat_vegetarian())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_fat
+                elif nutrichoice == 3:
+                    cur.execute(sort.sort_sugar_vegetarian())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_sugar
+                elif nutrichoice == 4:
+                    cur.execute(sort.sort_protein_vegetarian())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_protein
+            elif choice == 3:
+                if nutrichoice == 1:
+                    cur.execute(sort.sort_calories_paleo())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_calories
+                elif nutrichoice == 2:
+                    cur.execute(sort.sort_fat_paleo())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_fat
+                elif nutrichoice == 3:
+                    cur.execute(sort.sort_sugar_paleo())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_sugar
+                elif nutrichoice == 4:
+                    cur.execute(sort.sort_protein_paleo())
+                    for result in cur:
+                        recipe.append(result)
+                    #return recipe_protein
+            #recipe = dao_recipe.add_to_recipes(recipe,ingredient)
+
+            return recipe
+'''
+
+
+'''
+   def select_limitation(self,choice,nutrichoice, quant):
         recipe_fat = []
         recipe_calories = []
         recipe_sugar = []
@@ -155,109 +311,67 @@ class ServerInterface(Singleton):
             cur = connection.cursor()
             if choice == 1:
                 if nutrichoice == 1:
-                    cur.execute(sort.sort_calories_vegan())
+                    cur.execute(limitchoice.nutrient_limit_vegan_calories(quant))
                     for result in cur:
                         recipe_calories.append(result)
                     return recipe_calories
                 elif nutrichoice == 2:
-                    cur.execute(sort.sort_fat_vegan())
+                    cur.execute(limitchoice.nutrient_limit_vegan_fat(quant))
                     for result in cur:
                         recipe_fat.append(result)
                     return recipe_fat
                 elif nutrichoice == 3:
-                    cur.execute(sort.sort_sugar_vegan())
+                    cur.execute(limitchoice.nutrient_limit_vegan_sugar(quant))
                     for result in cur:
                         recipe_sugar.append(result)
                     return recipe_sugar
                 elif nutrichoice == 4:
-                    cur.execute(sort.sort_protein_vegan())
+                    cur.execute(limitchoice.nutrient_limit_vegan_protein(quant))
                     for result in cur:
                         recipe_sugar.append(result)
                     return recipe_protein
             elif choice == 2:
                 if nutrichoice == 1:
-                    cur.execute(sort.sort_calories_vegetarian())
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_calories(quant))
                     for result in cur:
                         recipe_calories.append(result)
                     return recipe_calories
                 elif nutrichoice == 2:
-                    cur.execute(sort.sort_fat_vegetarian())
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_fat(quant))
                     for result in cur:
                         recipe_fat.append(result)
                     return recipe_fat
                 elif nutrichoice == 3:
-                    cur.execute(sort.sort_sugar_vegetarian())
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_sugar(quant))
                     for result in cur:
                         recipe_sugar.append(result)
                     return recipe_sugar
                 elif nutrichoice == 4:
-                    cur.execute(sort.sort_protein_vegetarian())
+                    cur.execute(limitchoice.nutrient_limit_vegetarian_protein(quant))
                     for result in cur:
                         recipe_sugar.append(result)
                     return recipe_protein
             elif choice == 3:
                 if nutrichoice == 1:
-                    cur.execute(sort.sort_calories_paleo())
+                    cur.execute(limitchoice.nutrient_limit_paleo_calories(quant))
                     for result in cur:
                         recipe_calories.append(result)
                     return recipe_calories
                 elif nutrichoice == 2:
-                    cur.execute(sort.sort_fat_paleo())
+                    cur.execute(limitchoice.nutrient_limit_paleo_fat(quant))
                     for result in cur:
                         recipe_fat.append(result)
                     return recipe_fat
                 elif nutrichoice == 3:
-                    cur.execute(sort.sort_sugar_paleo())
+                    cur.execute(limitchoice.nutrient_limit_paleo_sugar(quant))
                     for result in cur:
                         recipe_sugar.append(result)
                     return recipe_sugar
                 elif nutrichoice == 4:
-                    cur.execute(sort.sort_protein_paleo())
+                    cur.execute(limitchoice.nutrient_limit_paleo_protein(quant))
                     for result in cur:
                         recipe_sugar.append(result)
                     return recipe_protein
-
-    def select_exclude(self,dtype, ingred):
-        exclude = []
-        try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
-        except:
-            print('Error: Could not connect to database')
-        else:
-            print('Connected to Oracle successfully')
-            cur = connection.cursor()
-            cur.execute(limitchoice.exclude_ingredient(dtype,ingred))
-            for result in cur:
-                exclude.append(result)
-        return exclude
-
-    def select_limitation(self,dtype, quant):
-        limit = []
-        try:
-            connection = cx_Oracle.connect('cwang9', 'CWANG9', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
-        except:
-            print('Error: Could not connect to database')
-        else:
-            print('Connected to Oracle successfully')
-            cur = connection.cursor()
-            cur.execute(limitchoice.nutrient_limit(dtype,quant))
-            for result in cur:
-                limit.append(result)
-        return limit
-
-
-
-
-
 '''
-connection = cx_Oracle.connect('cwang9','CWANG9',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
-#type in your own username and password
-cur = connection.cursor()
-cur.execute()
-#cur.execute('SELECT * FROM MakesUp')
-for result in cur:
-    print(result)
 
-cur.close()
-connection.close()
-'''
+

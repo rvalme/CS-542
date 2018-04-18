@@ -6,14 +6,56 @@
     Python Version:3.6
 '''
 class QueryFactory:
-    @classmethod
-    def get_recipes(cls):
-        return 'SELECT * FROM recipe'
+    @staticmethod
+    def get_recipes():
+        return "SELECT * FROM recipe"
 
-    @classmethod
-    def get_ingredients_in_recipe(cls):
-        return 'SELECT * FROM Makesup'
+    @staticmethod
+    def get_ingredients_in_recipe():
+        return "SELECT * FROM MakesUp"
 
-    @classmethod
-    def get_ingredients(cls):
-        return 'SELECT * FROM Ingredient'
+    @staticmethod
+    def get_ingredients():
+        return "SELECT * FROM Ingredient"
+
+    @staticmethod
+    def get_vegetarian_recipes():
+        return " SELECT * FROM Recipe R WHERE R.RID IN (SELECT S.RID FROM SubscribesTo S \
+                WHERE S.Type_of_diet = 'Vegetarian')"
+
+    @staticmethod
+    def get_vegan_recipes():
+        return "SELECT * FROM Recipe R WHERE R.RID IN \
+        (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Vegan')"
+
+    @staticmethod
+    def get_paleo_recipes():
+        return "SELECT * FROM Recipe R WHERE R.RID IN \
+        (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Paleolithic')"
+
+    @staticmethod
+    def get_keto_recipes():
+        return "SELECT * FROM Recipe R WHERE R.RID IN \
+        (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Ketogenic')"
+
+    @staticmethod
+    def get_vegan_ingredients():
+        return "SELECT * FROM MakesUp M WHERE M.RID IN  \
+               (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Vegan')"
+
+    @staticmethod
+    def get_vegetarian_ingredients():
+        return "SELECT * FROM MakesUp M WHERE M.RID IN \
+               (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Vegetarian')"
+
+    @staticmethod
+    def get_paleo_ingredients():
+        return "SELECT * FROM MakesUp M WHERE M.RID IN \
+               (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Paleolithic')"
+
+    @staticmethod
+    def get_keto_ingredients():
+        return "SELECT * FROM MakesUp M WHERE M.RID IN \
+               (SELECT S.RID FROM SubscribesTo S WHERE S.Type_of_diet = 'Ketogenic')"
+
+
