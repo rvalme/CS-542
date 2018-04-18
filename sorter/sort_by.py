@@ -7,3 +7,4 @@
 '''
 import operator
 class SortBy():
+    pass

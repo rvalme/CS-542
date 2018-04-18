@@ -32,10 +32,10 @@ class ServerInterface(Singleton):
       '''
     def __init__(self):
         self.__database = 'oracle.wpi.edu'
-        self.__username = 'rsvalme'
-        self.__password = 'RSVALME'
-        #self.__username = 'cwang9'
-        #self.__password = 'CWANG9'
+        #self.__username = 'rsvalme'
+        #self.__password = 'RSVALME'
+        self.__username = 'cwang9'
+        self.__password = 'CWANG9'
 
 
 
@@ -54,8 +54,15 @@ class ServerInterface(Singleton):
         else:
             #print('-------Connected to Oracle successfully--------')
             cur = connection.cursor()
-            self.update_customer(customer_id)
-           # cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
+            #self.update_customer(customer_id)
+            cur.execute("SELECT * FROM Customer C where C.CID = '" + customer_id + "'")
+            #if cur.arraysize == 0:
+            #TODO fix this
+            result = cur.fetchall()
+            print(len(result))
+            cur.execute("INSERT INTO Customer(CID) VALUES (:q)", q=customer_id)
+
+            cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
             #Execute a list of sql because cx_oracle will only take 1 parameter
             for i in range(len(ingrd_tuple_sql_list[1])):
                 cur.execute(ingrd_tuple_sql_list[1][i], q=ingrd_tuple_sql_list[0][i])
@@ -68,7 +75,7 @@ class ServerInterface(Singleton):
     def decrement_ingrd(self,recipe_id, recipes):
         ordered_recipe = Recipe()
         for recipe in recipes:
-            if recipe.recipe_id == rid:
+            if recipe.recipe_id == recipe_id:
                 ordered_recipe = recipe
                 break
         ingrd_tuple_list=[]
