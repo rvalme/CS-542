@@ -58,7 +58,8 @@ def select_recipes(name=None):
     rname = request.form['recipe']
     recipe = server_interface.get_recipe(rname)
     recipe_dict = recipe.__dict__
-    recipe_dict['_Recipe__img_name'] = img_name[rname]
+    lib = build_imglibrary()
+    recipe_dict['_Recipe__img_name'] = lib[rname]
     return render_template('selected_recipe.html', summary=recipe_dict)
     #a = request.form['recipe']
     #return a;
@@ -68,24 +69,28 @@ def search_recipes():
     server_interface=ServerInterface()
     #a = request.args.get('a', 0, type=str)
     #a = request.form['diet_t']
-    #import pdb;pdb.set_trace()
-    a = request.args.get('diet')
+    a = request.form.getlist('diet')[0]
     if(a == 'Vegan'):
         diet_number = 1
         recipes = server_interface.get_recipes(choice=diet_number)
-        return jsonify(result=[recipe.__dict__ for recipe in recipes])
+        shows,shows1,shows2,shows3 = get_showelement(recipes)
+        print(shows2)
+        return render_template('search_diet.html', shows = shows,shows1 = shows1,shows2 = shows2, shows3 = shows3)
     elif (a == 'Vegetarian'):
         diet_number = 2
         recipes = server_interface.get_recipes(choice=diet_number)
-        return jsonify(result=recipes)
+        shows,shows1,shows2,shows3 = get_showelement(recipes)
+        return render_template('search_diet.html', shows=shows,shows1 = shows1,shows2 = shows2, shows3 = shows3)
     elif (a == 'Paleo'):
         diet_number = 3
         recipes = server_interface.get_recipes(choice=diet_number)
-        return jsonify(result=recipes)
+        shows,shows1,shows2,shows3 = get_showelement(recipes)
+        return render_template('search_diet.html', shows=shows,shows1 = shows1,shows2 = shows2, shows3 = shows3)
     else:
         diet_number = 0
         recipes = server_interface.get_recipes(choice=diet_number)
-        return jsonify(result=recipes)
+        shows,shows1,shows2,shows3 = get_showelement(recipes)
+        return render_template('search_diet.html', shows=shows,shows1 = shows1,shows2 = shows2, shows3 = shows3)
 
 def main():
     '''
@@ -108,6 +113,109 @@ def main():
             recipes = server_interface.get_recipes(choice=diet_number)
 
             print(recipes)
+
+def get_showelement(recipes):
+    id = []
+    price = []
+    name = []
+    imgsrc = []
+    show = []
+    show1 = []
+    show2 = []
+    show3 = []
+    lib = build_imglibrary()
+    k = len(recipes)/4
+    if ( k == 1):
+       for i in range(len(recipes)):
+            show.append([])
+       for i in range(len(recipes)):
+           show[i].append(recipes[i].recipe_id)
+           show[i].append(recipes[i].price)
+           show[i].append(recipes[i].recipe_name)
+           show[i].append(lib.get(recipes[i].recipe_name))
+
+    elif ( k == 2):
+        for i in range(4):
+            show.append([])
+            show1.append([])
+        for i in range(4):
+            show[i].append(recipes[i].recipe_id)
+            show[i].append(recipes[i].price)
+            show[i].append(recipes[i].recipe_name)
+            show[i].append(lib.get(recipes[i].recipe_name))
+        for i in range(4):
+            show1[i].append(recipes[i+4].recipe_id)
+            show1[i].append(recipes[i+4].price)
+            show1[i].append(recipes[i+4].recipe_name)
+            show1[i].append(lib.get(recipes[i+4].recipe_name))
+
+    elif ( k == 3):
+        for i in range(4):
+            show.append([])
+            show1.append([])
+            show2.append([])
+        for i in range(4):
+            show[i].append(recipes[i].recipe_id)
+            show[i].append(recipes[i].price)
+            show[i].append(recipes[i].recipe_name)
+            show[i].append(lib.get(recipes[i].recipe_name))
+        for i in range(4):
+            show1[i].append(recipes[i+4].recipe_id)
+            show1[i].append(recipes[i+4].price)
+            show1[i].append(recipes[i+4].recipe_name)
+            show1[i].append(lib.get(recipes[i+4].recipe_name))
+        for i in range(4):
+            show2[i].append(recipes[i+8].recipe_id)
+            show2[i].append(recipes[i+8].price)
+            show2[i].append(recipes[i+8].recipe_name)
+            show2[i].append(lib.get(recipes[i+8].recipe_name))
+    elif ( k == 4):
+        for i in range(4):
+            show.append([])
+            show1.append([])
+            show2.append([])
+            show3.append([])
+        for i in range(4):
+            show[i].append(recipes[i].recipe_id)
+            show[i].append(recipes[i].price)
+            show[i].append(recipes[i].recipe_name)
+            show[i].append(lib.get(recipes[i].recipe_name))
+        for i in range(4):
+            show1[i].append(recipes[i+4].recipe_id)
+            show1[i].append(recipes[i+4].price)
+            show1[i].append(recipes[i+4].recipe_name)
+            show1[i].append(lib.get(recipes[i+4].recipe_name))
+        for i in range(4):
+            show2[i].append(recipes[i+8].recipe_id)
+            show2[i].append(recipes[i+8].price)
+            show2[i].append(recipes[i+8].recipe_name)
+            show2[i].append(lib.get(recipes[i+8].recipe_name))
+        for i in range(4):
+            show3[i].append(recipes[i+12].recipe_id)
+            show3[i].append(recipes[i+12].price)
+            show3[i].append(recipes[i+12].recipe_name)
+            show3[i].append(lib.get(recipes[i+12].recipe_name))
+    return show,show1,show2,show3
+
+def build_imglibrary():
+    lib_dict = {}
+    lib_dict['Spicy Kale Slaw'] = 'url(../static/images/K.jpg)'
+    lib_dict[ 'Smokin Ground Tempeh'] = 'url(../static/images/SGT.jpg)'
+    lib_dict[ 'Black-eyed Pea Fritters'] =  'url(../static/images/B.jpg)'
+    lib_dict['Black Bean and Mango Salsa'] = 'url(../static/images/BBMS.jpg)'
+    lib_dict['Green Goddess Hummus'] = 'url(../static/images/GG.jpg)'
+    lib_dict['Crispy Baked Tofu'] = 'url(../static/images/CBT.jpg)'
+    lib_dict['Vegan Garlic Bread'] = 'url(../static/images/GB.jpg)'
+    lib_dict['Kale Chips'] = 'url(../static/images/KC.jpg)'
+    lib_dict['Slow Cooker Paprika Chicken'] = 'url(../static/images/SCPC.jpg)'
+    lib_dict['Chorizo Stuffed Jalapenos'] = 'url(../static/images/CCSJ.jpg)'
+    lib_dict['Chocolate Walnut Date Balls'] = 'url(../static/images/CWDB.jpg)'
+    lib_dict['Olive Oil Mashed Cauliflower'] = 'url(../static/images/O.jpg)'
+    lib_dict['Ultimate Breakfast Roll Ups'] = 'url(../static/images/UBRF.jpg)'
+    lib_dict['Tomato Basil and Mozzarella Galette'] = 'url(../static/images/TBM.jpg)'
+    lib_dict['Creamy Beef Casserole'] = 'url(../static/images/CBC.jpg)'
+    lib_dict['Caprese Chicken Thigh'] = 'url(../static/images/CC.jpg)'
+    return lib_dict
 
 if __name__ == '__main__':
     #main()

@@ -137,7 +137,7 @@
 						$("nav ul li").toggleClass("animate");
 				  });
 				  var recipe = {{ summary|tojson|safe }};
-                  document.getElementById('change_img').style.backgroundImage='url(static/images/' + recipe._Recipe__img_name +')';
+                  document.getElementById('change_img').style.backgroundImage= recipe._Recipe__img_name;
                   var Recipe_Name = document.getElementById('recipe_name');
                   var Ingredients = document.getElementById('ing');
                   var Price = document.getElementById('price');

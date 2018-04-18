@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="CS542-DataBase" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- js -->
+<script src="static/js/jquery-1.11.1.min.js"></script>
+<!-- //js -->
+<!-- animation-effect -->
+<link href="static/css/animate.min.css" rel="stylesheet"> 
+<script src="static/js/wow.min.js"></script>
+<script>
+ new WOW().init();
+</script>
+<!-- //animation-effect -->
+<link href='https://fonts.googleapis.com/css?family=Oleo+Script:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+<!-- start-smooth-scrolling -->
+<script type="text/javascript" src="static/js/move-top.js"></script>
+<script type="text/javascript" src="static/js/easing.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smooth-scrolling -->
+</head>
+	
+<body>
+<!-- banner -->
+	<div class="banner-figures">
+		<div class="banner1">
+			<div class="container banner-drop">
+				<div class="header header1">
+					<div class="header-left">
+						<ul>
+							<li class="animated wow fadeInLeftBig" data-wow-duration="1200ms" data-wow-delay="800ms"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 100 Institute Road,Worcester,MA </li>
+							<li class="animated wow fadeInLeftBig" data-wow-duration="1200ms" data-wow-delay="900ms"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> CS542-Group-8</li>
+							
+						</ul>
+					</div>
+					<div class="header-right header-right1">
+						<nav>
+						  <ul>
+							<li>
+								<a href="index.html"><i class="glyphicon glyphicon-home" aria-hidden="true"></i><span>Home</span></a>
+							</li>
+							<li class="active">
+								<a href="about.html"><i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i><span>About</span></a>
+							</li>
+							<li>
+								<a href="short-codes.html"><i class="glyphicon glyphicon-text-size" aria-hidden="true"></i><span>Short Codes</span></a>
+							</li>
+							<li>
+								<a href="blog.html"><i class="glyphicon glyphicon-picture" aria-hidden="true"></i><span>Blog</span></a>
+							</li>
+							<li>
+								<a href="mail.html"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><span>Mail Us</span></a>
+							</li>
+						  </ul>
+						</nav>
+						<div class="menu-icon animated wow zoomIn" data-wow-duration="1000ms" data-wow-delay="800ms"><span></span></div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="logo animated wow bounceInDown" data-wow-duration="1000ms" data-wow-delay="500ms">
+					<h1><a href="/"><span>100% Healthy</span>Best Recipes</a></h1>
+				</div>
+
+			</div>
+		</div>
+			<script>
+				(function($){
+				  $(".menu-icon").on("click", function(){
+						$(this).toggleClass("open");
+						$(".container").toggleClass("nav-open");
+						$("nav ul li").toggleClass("animate");
+				  });				  
+				})(jQuery);
+			</script>
+	</div>
+<!-- //banner -->
+<!-- banner-bottom -->
+    {% if shows %}
+	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
+		<ul id="flexiselDemo1">	
+			{% for show in shows %}              
+			            <li>
+			                    <div class="item item-sub" style="background:{{show[3]}}" >
+			                        <div class="item1">
+			                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
+			                            <h3>{{show[2]}}</h3>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
+			                        </div>
+			                        <div class="p-mask">
+			                            <h4>{{show[2]}}</h4>
+			                            <p>The price of {{show[2]}} is {{show[1]}}</p>
+			                            <div class="social-icons">
+			                                <ul>
+			                                    <li><a href="#" class="twitter"></a></li>
+			                                    <li><a href="#" class="facebook"></a></li>
+			                                    <li><a href="#" class="google"></a></li>
+			                                </ul>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </li>   
+			 {% endfor %}				
+		</ul>
+			<script type="text/javascript">
+				$(window).load(function() {
+				$("#flexiselDemo1").flexisel({
+					visibleItems: 4,
+					animationSpeed: 1000,
+					autoPlay: false,
+					autoPlaySpeed: 3000,    		
+					pauseOnHover: true,
+					enableResponsiveBreakpoints: true,
+					responsiveBreakpoints: { 
+						portrait: { 
+							changePoint:480,
+							visibleItems: 1
+						}, 
+						landscape: { 
+							changePoint:640,
+							visibleItems: 2
+						},
+						tablet: { 
+							changePoint:768,
+							visibleItems: 3
+						}
+					}
+				});
+				
+			 });
+			</script>
+			<script type="text/javascript" src="static/js/jquery.flexisel.js">			 
+			</script>
+	</div>
+	{% else %}
+	      <script type="text/javascript">
+		      $(window).load(function() {
+		     $("#flexiselDemo1").hide();
+			  });
+			  </script>
+	{% endif %}
+	{% if shows1 %}
+	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
+		<ul id="flexiselDemo2">	
+			{% for show1 in shows1 %}              
+			            <li>
+			                    <div class="item item-sub" style="background:{{show1[3]}}" >
+			                        <div class="item1">
+			                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
+			                            <h3>{{show1[2]}}</h3>
+			                        </div>
+			                        <div class="p-mask">
+			                            <h4>{{show1[2]}}</h4>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show1[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
+			                            <p>The price of {{show1[2]}} is {{show1[1]}}</p>
+			                            <div class="social-icons">
+			                                <ul>
+			                                    <li><a href="#" class="twitter"></a></li>
+			                                    <li><a href="#" class="facebook"></a></li>
+			                                    <li><a href="#" class="google"></a></li>
+			                                </ul>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </li>   
+			 {% endfor %}				
+		</ul>
+			<script type="text/javascript">
+				$(window).load(function() {
+				$("#flexiselDemo2").flexisel({
+					visibleItems: 4,
+					animationSpeed: 1000,
+					autoPlay: false,
+					autoPlaySpeed: 3000,    		
+					pauseOnHover: true,
+					enableResponsiveBreakpoints: true,
+					responsiveBreakpoints: { 
+						portrait: { 
+							changePoint:480,
+							visibleItems: 1
+						}, 
+						landscape: { 
+							changePoint:640,
+							visibleItems: 2
+						},
+						tablet: { 
+							changePoint:768,
+							visibleItems: 3
+						}
+					}
+				});
+				
+			 });
+			</script>
+			<script type="text/javascript" src="static/js/jquery.flexisel.js">			 
+			</script>
+	</div>
+	{% else %}
+	  <script type="text/javascript">
+		$(window).load(function() {
+	   $("#flexiselDemo2").hide();
+		});
+		</script>
+	{% endif %}
+	{% if shows2 %}
+	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
+		<ul id="flexiselDemo3">	
+			{% for show2 in shows2 %}              
+			            <li>
+			                    <div class="item item-sub" style="background:{{show2[3]}}" >
+			                        <div class="item1">
+			                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
+			                            <h3>{{show2[2]}}</h3>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show2[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
+			                        </div>
+			                        <div class="p-mask">
+			                            <h4>{{show2[2]}}</h4>
+			                            <p>The price of {{show2[2]}} is {{show2[1]}}</p>
+			                            <div class="social-icons">
+			                                <ul>
+			                                    <li><a href="#" class="twitter"></a></li>
+			                                    <li><a href="#" class="facebook"></a></li>
+			                                    <li><a href="#" class="google"></a></li>
+			                                </ul>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </li>   
+			 {% endfor %}				
+		</ul>
+			<script type="text/javascript">
+				$(window).load(function() {
+				$("#flexiselDemo3").flexisel({
+					visibleItems: 4,
+					animationSpeed: 1000,
+					autoPlay: false,
+					autoPlaySpeed: 3000,    		
+					pauseOnHover: true,
+					enableResponsiveBreakpoints: true,
+					responsiveBreakpoints: { 
+						portrait: { 
+							changePoint:480,
+							visibleItems: 1
+						}, 
+						landscape: { 
+							changePoint:640,
+							visibleItems: 2
+						},
+						tablet: { 
+							changePoint:768,
+							visibleItems: 3
+						}
+					}
+				});
+				
+			 });
+			</script>
+			<script type="text/javascript" src="static/js/jquery.flexisel.js">			 
+			</script>
+	</div>
+	{% else %}
+	  <script type="text/javascript">
+		$(window).load(function() {
+	   $("#flexiselDemo3").hide();
+		});
+		</script>
+	{% endif %}
+	{% if shows3 %}
+	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
+		<ul id="flexiselDemo4">	
+			{% for show3 in shows3 %}              
+			            <li>
+			                    <div class="item item-sub" style="background:{{show3[3]}}" >
+			                        <div class="item1">
+			                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
+			                            <h3>{{show3[2]}}</h3>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show3[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
+			                        </div>
+			                        <div class="p-mask">
+			                            <h4>{{show3[2]}}</h4>
+			                            <p>The price of {{show3[2]}} is {{show3[1]}}</p>
+			                            <div class="social-icons">
+			                                <ul>
+			                                    <li><a href="#" class="twitter"></a></li>
+			                                    <li><a href="#" class="facebook"></a></li>
+			                                    <li><a href="#" class="google"></a></li>
+			                                </ul>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </li>   
+			 {% endfor %}				
+		</ul>
+			<script type="text/javascript">
+				$(window).load(function() {
+				$("#flexiselDemo4").flexisel({
+					visibleItems: 4,
+					animationSpeed: 1000,
+					autoPlay: false,
+					autoPlaySpeed: 3000,    		
+					pauseOnHover: true,
+					enableResponsiveBreakpoints: true,
+					responsiveBreakpoints: { 
+						portrait: { 
+							changePoint:480,
+							visibleItems: 1
+						}, 
+						landscape: { 
+							changePoint:640,
+							visibleItems: 2
+						},
+						tablet: { 
+							changePoint:768,
+							visibleItems: 3
+						}
+					}
+				});
+				
+			 });
+			</script>
+			<script type="text/javascript" src="static/js/jquery.flexisel.js">			 
+			</script>
+	</div>
+	{% else %}
+	  <script type="text/javascript">
+		$(window).load(function() {
+	   $("#flexiselDemo4").hide();
+		});
+		</script>
+	{% endif %}
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+<!-- //here ends scrolling icon -->
+</body>
+</html>

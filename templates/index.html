@@ -150,38 +150,6 @@
 				 </div><!-- /.col-lg-6 -->
 			</div>
 		</div>
-			<script>
-				(function($){
-				  $(".menu-icon").on("click", function(){
-						$(this).toggleClass("open");
-						$(".container").toggleClass("nav-open");
-						$("nav ul li").toggleClass("animate");
-				  });
-				  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-				  var submit_form = function(e) {
-                  $.getJSON($SCRIPT_ROOT + '/_search_recipes', {
-                  diet: $('input[name="diet"]').val(),
-				  //d: $("#s1 option:selected").text(),
-				  //s: $("#s2 option:selected").text(),
-				  //w: $("#s3 option:selected").text()
-                  }, function(data) {
-					var str = JSON.stringify(data.result,null,2);
-					$('#result').text(str);
-                     //$('#flexiselDemo1').hide();                         
-                      console.log(str);
-                      document.getElementById('flexiselDemo1').innerHTML = str;
-                  });
-                  return false;
-                  }; 
-				  $('#go').bind('click', submit_form);
-                  $('input[type=text]').bind('keydown', function(e) {
-                        if (e.keyCode == 13) {
-                        submit_form(e);
-                        }
-                  });
-
-				})(jQuery);
-			</script>
 	</div>
 <!-- //banner -->
 <!-- banner-bottom -->
