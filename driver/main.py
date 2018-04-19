@@ -57,7 +57,7 @@ def main():
             print(limitrecipe)
 
             ordr = Order()
-            ordr.order_recipe(customer_id, server_interface, recipes)
+            ordr.order_recipe(customer_id, server_interface)
 
 
         #give customer an id and ask them what recipe they want

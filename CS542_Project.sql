@@ -9,6 +9,8 @@ DROP TABLE Recipe;
 DROP TABLE Chef;
 DROP TABLE Diet;
 
+Select * from CanRequest;
+
 CREATE TABLE Customer(
 CID CHAR(20),
 PRIMARY KEY(CID));
@@ -309,9 +311,10 @@ VALUES('R16', 'Ch04');
 
 CREATE TABLE Ingredient(
 INAME CHAR(30),
-Quantity REAL,
+Quantity REAL CONSTRAINT positive_quant CHECK (Quantity >= 0),
 Unit CHAR(20),
-PRIMARY KEY (INAME));
+PRIMARY KEY (INAME)
+);
 
 INSERT
 INTO Ingredient(INAME, Quantity, Unit)
@@ -1210,3 +1213,6 @@ SELECT * from Ingredient;
 Select * FRom MakesInstanceof;
 select * from SubscribesTo;
 select * from CanRequest;
+select * from customer;
+
+

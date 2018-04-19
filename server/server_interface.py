@@ -50,14 +50,13 @@ class ServerInterface(Singleton):
     '''
 
 
-    def insert_order(self, recipe_requests, recipes, recipe_id, customer_id):
+    def insert_order(self, recipe_requests, recipe_id, customer_id, quantities):
         '''
         This function inserts an order into the CanRequest table
         showing that the customer has made an
         an order request
         recipe_request is a list of tuples
         '''
-        ingrd_tuple_sql_list = self.decrement_ingrd(recipe_id, recipes)
         try:
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except cx_Oracle.DatabaseError as exception:
@@ -70,30 +69,25 @@ class ServerInterface(Singleton):
             result = cur.fetchall()
             if len(result) == 0:
                 cur.execute("INSERT INTO Customer(CID) VALUES (:q)", q=customer_id)
-
             cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
             #Execute a list of sql because cx_oracle will only take 1 parameter
-            for i in range(len(ingrd_tuple_sql_list[1])):
-                cur.execute(ingrd_tuple_sql_list[1][i], q=ingrd_tuple_sql_list[0][i])
+            self.decrement_ingrd(recipe_id, cur, quantities)
+
             connection.commit()
             cur.close()
             connection.close()
-    def update_customer(self, customer_id):
-        pass
 
-    def decrement_ingrd(self,recipe_id, recipes):
-        ordered_recipe = Recipe()
-        for recipe in recipes:
-            if recipe.recipe_id == recipe_id:
-                ordered_recipe = recipe
-                break
-        ingrd_tuple_list=[]
-        ingrd_sql_list=[]
-        for n, q in ordered_recipe.ingredients.items():
-            ingrd_tuple_list.append((q))
-            ingrd_sql_list.append("UPDATE Ingredient I SET I.QUANTITY = I.QUANTITY - :q WHERE I.INAME ='" + n + "'")
-        return ingrd_tuple_list, ingrd_sql_list
 
+    def decrement_ingrd(self,recipe_id, cur, quantity):
+        ingrd_tuples = []
+        sql_list = []
+
+        cur.execute("SELECT INAME, AMOUNT FROM MAKESUP WHERE RID = '" + recipe_id + "'")
+        ingrd_tuples = cur.fetchall()
+        for i in range(len(ingrd_tuples)):
+            update_sql = "UPDATE Ingredient I SET I.QUANTITY = I.QUANTITY - :q WHERE I.INAME ='" + ingrd_tuples[i][0].rstrip() + "'"
+            decre_amt = float(ingrd_tuples[i][1]) * int(quantity)
+            cur.execute(update_sql, q=decre_amt)
 
 
     def get_recipes(self, choice=0):
@@ -278,7 +272,6 @@ class ServerInterface(Singleton):
 
 
 '''
-<<<<<<< HEAD
 connection = cx_Oracle.connect('rsvalme','RSVALME',cx_Oracle.makedsn('oracle.wpi.edu',1521,'ORCL'));
 #type in your own username and password
 cur = connection.cursor()
