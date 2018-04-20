@@ -132,6 +132,7 @@ class Recipe:
                 self.__carbs, self.__sugar, self.__fat, self.__protein,
                 self.__sodium,self.__price, self.__ingredients, self.__chef)
 
+
     def to_string(self):
         return print(repr(self))
 

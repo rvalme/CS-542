@@ -9,6 +9,10 @@ import cx_Oracle
 import sys
 from server.query_factory import QueryFactory as query_factory
 from server.dao_recipe import DaoRecipe as dao_recipe
+from server.limitation_choice import limitchoice
+
+from recipe.recipe import Recipe
+
 
 class Singleton(object):
     '''
@@ -30,7 +34,20 @@ class ServerInterface(Singleton):
         self.__database = 'oracle.wpi.edu'
         self.__username = 'rsvalme'
         self.__password = 'RSVALME'
+        #self.__username = 'cwang9'
+        #self.__password = 'CWANG9'
 
+        #self.__username = 'hwang10'
+        #self.__password = 'HWANG10'
+
+    '''
+    def make_tuple(self,tuples,row,column):
+        array = []
+        for i in range (row):
+            for j in range (column):
+                array[i].append(tuples[i+j])
+        return array
+    '''
 
     def update_order(self):
         try:
@@ -50,7 +67,7 @@ class ServerInterface(Singleton):
             connection.close()
 
 
-    def insert_order(self, recipe_requests):
+    def insert_order(self, recipe_requests, recipe_id, customer_id, quantities):
         '''
         This function inserts an order into the CanRequest table
         showing that the customer has made an
@@ -59,15 +76,25 @@ class ServerInterface(Singleton):
         '''
         try:
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
-        except cx_Oracle.DatabaseError as exception:
-            self.printf('Failed to connect to %s\n', self.__database)
-        else:
-            #print('-------Connected to Oracle successfully--------')
-
-
+            connection.begin()
             cur = connection.cursor()
+            # Execute a list of sql because cx_oracle will only take 1 parameter
+            self.decrement_ingrd(recipe_id, cur, quantities)
+            # self.update_customer(customer_id)
+            cur.execute("SELECT * FROM Customer C where C.CID = '" + customer_id + "'")
+            result = cur.fetchall()
+            if len(result) == 0:
+                cur.execute("INSERT INTO Customer(CID) VALUES (:q)", q=customer_id)
             cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
             connection.commit()
+        except cx_Oracle.DatabaseError as e:
+            error, = e.args
+            # roll back the transaction
+            connection.rollback()
+            print(sys.stderr, "Oracle-Error-Code:", error.code)
+            print(sys.stderr, "Oracle-Error-Message:", error.message)
+        finally:
+            #Close cursor and connection
             cur.close()
             connection.close()
 
@@ -83,6 +110,7 @@ class ServerInterface(Singleton):
             cur.close()
             connection.close()
             return rid
+
     def get_recipe(self, rname):
         ingredients = []
         chef= []
@@ -101,17 +129,31 @@ class ServerInterface(Singleton):
                            (SELECT R.RID FROM Recipe R WHERE R.RNAME = '" + rname + "')")
             for result in cur.fetchall():
                 ingredients.append(result);
+
+            cur.execute(query_factory.get_chef_info())
+            chef = cur.fetchall()
             cur.close()
             connection.close()
             #print("-------Connection closed-------")
-            r_out = dao_recipe.build_recipe(recipe, ingredients)
+            r_out = dao_recipe.build_recipe(recipe, ingredients, chef)
             return r_out
+
+    def decrement_ingrd(self,recipe_id, cur, quantity):
+        ingrd_tuples = []
+        sql_list = []
+
+        cur.execute("SELECT INAME, AMOUNT FROM MAKESUP WHERE RID = '" + recipe_id + "'")
+        ingrd_tuples = cur.fetchall()
+        for i in range(len(ingrd_tuples)):
+            update_sql = "UPDATE Ingredient I SET I.QUANTITY = I.QUANTITY - :q WHERE I.INAME ='" + ingrd_tuples[i][0].rstrip() + "'"
+            decre_amt = float(ingrd_tuples[i][1]) * int(quantity)
+            cur.execute(update_sql, q=decre_amt)
+
 
     def get_recipes(self, choice=0):
         recipes = []
         ingredients = []
         chef= []
-
         try:
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except cx_Oracle.DatabaseError as exception:
@@ -122,65 +164,79 @@ class ServerInterface(Singleton):
             #Customer chooses Vegan
             if choice == 1:
                 cur.execute(query_factory.get_vegan_recipes())
-                for result in cur:
-                    recipes.append(result)
+                recipes = cur.fetchall()
+
                 cur.execute(query_factory.get_vegan_ingredients())
-                for result in cur:
-                    ingredients.append(result)
+                ingredients = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+
             #Customer chooses Vegetarian
             elif choice == 2:
                 cur.execute(query_factory.get_vegetarian_recipes())
-                for result in cur:
-                    recipes.append(result)
+                recipes = cur.fetchall()
+
                 cur.execute(query_factory.get_vegetarian_ingredients())
-                for result in cur:
-                    ingredients.append(result)
+                ingredients = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+
             #Customer chooses Paleo
             elif choice == 3:
                 cur.execute(query_factory.get_paleo_recipes())
-                for result in cur:
-                    recipes.append(result)
+                recipes =cur.fetchall()
+
                 cur.execute(query_factory.get_paleo_ingredients())
-                for result in cur:
-                    ingredients.append(result)
+                ingredients = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+
             #Customer chooses Keto
-            #No data, implements later
+            elif choice == 4:
+                cur.execute(query_factory.get_keto_recipes())
+                recipes = cur.fetchall()
+
+                cur.execute(query_factory.get_keto_ingredients())
+                ingredients = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+
 
 
             #Return the entire list of recipes
             elif choice == 0:
                 cur.execute(query_factory.get_recipes())
-                for result in cur:
-                    recipes.append(result)
-                cur.execute(query_factory.get_ingredients_in_recipe())
-                for result in cur:
-                    ingredients.append(result)
+                recipes = cur.fetchall()
 
+                cur.execute(query_factory.get_ingredients_in_recipe())
+                ingredients = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
 
             cur.close()
             connection.close()
             #print("-------Connection closed-------")
-            recipes = dao_recipe.add_to_recipes(recipes,ingredients)
 
+            recipes = dao_recipe.add_to_recipes(recipes,ingredients,chef)
             return recipes
-
-
-
 
 
     def get_ingredient_in_recipe(self):
         ingredients_in_recipes = []
         try:
-            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
             print('Connected to Oracle successfully')
             cur = connection.cursor()
             cur.execute(query_factory.get_ingredients_in_recipe())
-
-            for result in cur:
-                ingredients_in_recipes.append(result)
+            ingredients_in_recipes = cur.fetchall()
             cur.close()
             connection.close()
             print("done")
@@ -190,15 +246,14 @@ class ServerInterface(Singleton):
     def get_ingredients(self):
         ingredients = []
         try:
-            connection = cx_Oracle.connect('rsvalme', 'RSVALME', cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
         except:
             print('Error: Could not connect to database')
         else:
             print('Connected to Oracle successfully')
             cur = connection.cursor()
             cur.execute(query_factory.get_ingredients())
-            for result in cur:
-                ingredients.append(result)
+            ingredients = cur.fetchall()
             cur.close()
             connection.close()
             print("done")
@@ -211,6 +266,68 @@ class ServerInterface(Singleton):
         error, = exception.args
         self.printf("Error code = %s\n", error.code)
         self.printf("Error message = %s\n", error.message)
+
+
+
+    def select_exclude(self,choice, ingred):
+        exclude = []
+        ingredient = []
+        chef = []
+        try:
+            connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
+        except:
+            print('Error: Could not connect to database')
+        else:
+            print('Connected to Oracle successfully')
+            cur = connection.cursor()
+            if choice == 1:
+
+                cur.execute(limitchoice.exclude_ingredient_vegan(ingred))
+                exclude = cur.fetchall()
+
+                cur.execute(limitchoice.ingredient_exclude_vegan(ingred))
+                ingredient = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+                #return exclude
+            elif choice == 2:
+                cur.execute(limitchoice.exclude_ingredient_vegetarian(ingred))
+                exclude = cur.fetchall()
+
+                cur.execute(limitchoice.ingredient_exclude_vegetarian(ingred))
+                ingredient = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+                #return exclude
+            elif choice == 3:
+                cur.execute(limitchoice.exclude_ingredient_paleo(ingred))
+                exclude = cur.fetchall()
+
+                cur.execute(limitchoice.ingredient_exclude_paleo(ingred))
+                ingredient = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+
+            elif choice == 4:
+                cur.execute(limitchoice.exclude_ingredient_keto(ingred))
+                exclude = cur.fetchall()
+
+                cur.execute(limitchoice.ingredient_exclude_keto(ingred))
+                ingredient = cur.fetchall()
+
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
+            cur.close()
+            connection.close()
+            exclude = dao_recipe.add_to_recipes(exclude,ingredient,chef)
+            return exclude
+
+
+
+
 
 
 

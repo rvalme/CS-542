@@ -107,7 +107,7 @@
                     </div>
                     <div class="margin_bottom">
                         <h2>Chef</h2>
-                        <p>Chef 01</p>
+                        <p id="chef">Chef 01</p>
                     </div>
                 </div>
 
@@ -140,6 +140,7 @@
                   document.getElementById('change_img').style.backgroundImage= recipe._Recipe__img_name;
                   var Recipe_Name = document.getElementById('recipe_name');
                   var Ingredients = document.getElementById('ing');
+                  var Chef = document.getElementById('chef');
                   var Price = document.getElementById('price');
                   var Nutrients = document.getElementsByClassName('nutr');
                   for (var key in recipe._Recipe__ingredients) {
@@ -149,6 +150,7 @@
                   }
                   Recipe_Name.innerText= recipe._Recipe__recipe_name;
                   Price.innerText='$' + recipe._Recipe__price;
+                  Chef.innerText= recipe._Recipe__chef;
                   Nutrients[0].innerText= 'Protein: ' + recipe._Recipe__protein + 'g';
                   Nutrients[1].innerText= 'Calories: ' + recipe._Recipe__calories + 'kcal';
                   Nutrients[2].innerText= 'Carbs: ' + recipe._Recipe__carbs + 'g';
@@ -157,13 +159,14 @@
                   Nutrients[5].innerText= 'Fat: ' + recipe._Recipe__fat + 'g';
                   document.getElementById('ing').style.color='#ffffff';
                   document.getElementById('nutri').style.color='#ffffff';
+                  document.getElementById('chef').style.color='#ffffff';
 
 				  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 				  var submit_form = function(e) {
                   $.getJSON($SCRIPT_ROOT + '/_submit_order', {
                   quantity: $('select[name="quantity"]').val(),
                   recipe: recipe._Recipe__recipe_name,
-                  cid: 'C01'
+                  cid:'C' + ('0000' + (Math.floor(Math.random() * 98) + 1).toString()).substr(-2)
                   }, function(data) {
                       console.log("made it");
                       document.getElementById('text_hidden').style.visibility='visible';

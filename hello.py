@@ -39,7 +39,7 @@ def submit_order(name=None):
     cid = request.args.get('cid', 0, type=str)
     rid = server_interface.get_rid(recipe)
     recipe_tuple = [(rid, cid, quantity)]
-    server_interface.insert_order(recipe_tuple)
+    server_interface.insert_order(recipe_tuple, rid, cid, quantity)
     return jsonify(img_name)
 
 

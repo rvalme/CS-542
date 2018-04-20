@@ -14,46 +14,60 @@ class DaoRecipe():
     recipe object
     '''
     @staticmethod
-    def add_to_recipes(recipe_tuple_list, ingredient_tuple_list):
+    def add_to_recipes(recipe_tuple_list, ingredient_tuple_list, chef_tuple_list):
         #return a list of recipe object
         recipes = []
         for recipe_tuple in recipe_tuple_list:
-            recipes.append(DaoRecipe.build_recipe(recipe_tuple, ingredient_tuple_list))
+            recipes.append(DaoRecipe.__build_recipe(recipe_tuple, ingredient_tuple_list, chef_tuple_list))
         return recipes
 
 
     @staticmethod
-    def build_recipe(recipe_tuple,ingredient_tuple_list):
+    def build_recipe(recipe_tuple,ingredient_tuple_list, chef_tuple_list):
         #pass in one tuple to __build_recipe to build one recipe object
         #instantiate recipe instance
         recipe_instance = Recipe()
         DaoRecipe.__process_ingredients_info(recipe_tuple, ingredient_tuple_list, recipe_instance)
         DaoRecipe.__process_recipe_info(recipe_tuple, recipe_instance)
+        DaoRecipe.__process_chef_info(recipe_tuple, chef_tuple_list, recipe_instance)
+
         return recipe_instance
+    @staticmethod
+    def __build_recipe(recipe_tuple,ingredient_tuple_list, chef_tuple_list):
+        #pass in one tuple to __build_recipe to build one recipe object
+        #instantiate recipe instance
+        recipe_instance = Recipe()
+        DaoRecipe.__process_ingredients_info(recipe_tuple, ingredient_tuple_list, recipe_instance)
+        DaoRecipe.__process_recipe_info(recipe_tuple, recipe_instance)
+        DaoRecipe.__process_chef_info(recipe_tuple, chef_tuple_list, recipe_instance)
+
+        return recipe_instance
+
 
     @staticmethod
     def __process_ingredients_info(recipe_tuple, ingredient_tuple_list, recipe_instance):
-        ingredients_per_recipe = []
-        for ingredient_tuple in ingredient_tuple_list:
-            if recipe_tuple[0] in ingredient_tuple[1]:
-                ingredients_per_recipe.append(ingredient_tuple)
-        for tuple in ingredients_per_recipe:
-            recipe_instance.ingredients[tuple[0].rstrip()] = tuple[2]
+        ingred_indexes = [i for i, v in enumerate(ingredient_tuple_list) if v[1] == recipe_tuple[0]]
+        for ingred_index in ingred_indexes:
+            recipe_instance.ingredients[ingredient_tuple_list[ingred_index][0].rstrip()]\
+                = ingredient_tuple_list[ingred_index][2]
+
 
     @staticmethod
     def __process_recipe_info(recipe_tuple, recipe_instance):
         # the health info was returned as string, changed to int
-        recipe_float_to_int = []
-        for i in range(2, len(recipe_tuple) - 1):
-            recipe_info_int = int(recipe_tuple[i])
-            recipe_float_to_int.append(recipe_info_int)
+        #recipe_float_to_int = []
+
         recipe_instance.recipe_id = recipe_tuple[0].rstrip()
         recipe_instance.recipe_name = recipe_tuple[1].rstrip()
-        recipe_instance.carbs = recipe_float_to_int[0];
-        recipe_instance.sugar = recipe_float_to_int[1];
-        recipe_instance.fat = recipe_float_to_int[2];
-        recipe_instance.protein= recipe_float_to_int[3];
-        recipe_instance.calories =recipe_float_to_int[4];
-        recipe_instance.sodium = recipe_float_to_int[5];
+        recipe_instance.calories = int(recipe_tuple[6])
+        recipe_instance.fat = int(recipe_tuple[4])
+        recipe_instance.protein = int(recipe_tuple[5])
+        recipe_instance.sodium = int(recipe_tuple[7])
+        recipe_instance.sugar = int(recipe_tuple[3])
+        recipe_instance.carbs = int(recipe_tuple[2])
         recipe_instance.price = recipe_tuple[8]
 
+    @staticmethod
+    def __process_chef_info(recipe_tuple, chef_tuple_list, recipe_instance):
+        tuple_indexes = [i for i, v in enumerate(chef_tuple_list) if v[0] == recipe_tuple[0]]
+        recipe_instance.chef = chef_tuple_list[tuple_indexes[0]][1]

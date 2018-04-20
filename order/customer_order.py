@@ -21,5 +21,6 @@ class Order:
         quantities_str = input('Choose your desired quantity for each recipe correspondingly (e.g. 1, 2, 3)\n')
         recipe_ids = [x.strip() for x in recipe_ids_str.split(',')]
         quantities = [x.strip() for x in quantities_str.split(',')]
-        recipe_requests = [(recipe, customer_id, quantities[ind]) for ind, recipe  in enumerate(recipe_ids)]
-        server_interface.insert_order(recipe_requests)
+        recipe_requests = [(recipe, customer_id, quantities[ind]) for ind, recipe in enumerate(recipe_ids)]
+        server_interface.insert_order(recipe_requests, recipe_ids[0], customer_id, quantities[0])
+
