@@ -59,21 +59,25 @@ class ServerInterface(Singleton):
         '''
         try:
             connection = cx_Oracle.connect(self.__username, self.__password, cx_Oracle.makedsn('oracle.wpi.edu', 1521, 'ORCL'));
-        except cx_Oracle.DatabaseError as exception:
-            self.printf('Failed to connect to %s\n', self.__database)
-        else:
-            #print('-------Connected to Oracle successfully--------')
+            connection.begin()
             cur = connection.cursor()
-            #self.update_customer(customer_id)
+            # Execute a list of sql because cx_oracle will only take 1 parameter
+            self.decrement_ingrd(recipe_id, cur, quantities)
+            # self.update_customer(customer_id)
             cur.execute("SELECT * FROM Customer C where C.CID = '" + customer_id + "'")
             result = cur.fetchall()
             if len(result) == 0:
                 cur.execute("INSERT INTO Customer(CID) VALUES (:q)", q=customer_id)
             cur.executemany("INSERT INTO CanRequest(RID, CID, Quantity) VALUES (:1, :2, :3)", recipe_requests)
-            #Execute a list of sql because cx_oracle will only take 1 parameter
-            self.decrement_ingrd(recipe_id, cur, quantities)
-
             connection.commit()
+        except cx_Oracle.DatabaseError as e:
+            error, = e.args
+            # roll back the transaction
+            connection.rollback()
+            print(sys.stderr, "Oracle-Error-Code:", error.code)
+            print(sys.stderr, "Oracle-Error-Message:", error.message)
+        finally:
+            #Close cursor and connection
             cur.close()
             connection.close()
 
