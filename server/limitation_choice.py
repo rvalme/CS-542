@@ -234,5 +234,17 @@ class limitchoice():
         g = str(quant)
         return a + g
 
+    @staticmethod
+    def exclude_ingredient_all(ingred):
+        a = "SELECT * FROM Recipe R WHERE R.RID NOT IN (SELECT M.RID FROM MAKESUP M WHERE M.INAME ="
+        b = str(ingred)
+        c = ")"
+        return a + b + c
 
+    @staticmethod
+    def ingredient_exclulde_all(ingred):
+        a = "SELECT * FROM MakesUp M WHERE M.RID NOT IN (SELECT M.RID FROM MAKESUP M WHERE M.INAME ="
+        b = str(ingred)
+        c = ")"
+        return a + b + c
 

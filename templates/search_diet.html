@@ -77,6 +77,59 @@
 				<div class="logo animated wow bounceInDown" data-wow-duration="1000ms" data-wow-delay="500ms">
 					<h1><a href="/"><span>100% Healthy</span>Best Recipes</a></h1>
 				</div>
+			<div class="in-gp-tb ">
+			<div class="align_left2">
+				  <form action="/_sort_recipes" method="post">
+						<div class="input-group diet_color">
+						   <p>Sort by</p>
+						   <div class="clear_left">
+						   <div class="radio">
+								  <label><input type="radio" name="nutrients" value="Carbs" ><p> Carbs</p></label>
+								</div>
+								<div class="radio">
+								  <label><input type="radio" name="nutrients" value="Sugar" ><p>Sugar</p></label>
+								</div>
+							</div> 
+						   <div class="clear_left">
+								<div class="radio">
+								  <label><input type="radio" name="nutrients" value="Fat" ><p>Fat</p></label>
+								</div> 
+								<div class="radio">
+								  <label><input type="radio" name="nutrients" value="Calories" ><p>Calories</p></label>
+								</div> 
+								  <input type="submit"  class="form-control" name= "diet_s" value="Go!">
+							</div> 
+						</div><!-- /input-group -->
+				  </form>
+				  </div>
+				  <div class="align_left3">
+						<form action="/_limit" method="post">
+							<div class="input-group diet_color">
+							    <p>Limit(Less than certain amount)</p>
+								 <div class="clear_left" style='margin-top:20px'>
+								   <input type="text" name="amount">
+								    <input type="submit" class="form-control" name= "limit_amount" value="Go!" style='margin-top:20px'>	
+				       
+							     </div> 
+		                    </div><!-- /input-group -->
+						  </form>
+				  </div>
+				  <div class="align_left4">
+                      <form action="/_without_ingredient" method="post">
+					        <div class="input-group diet_color">
+							   <p>Without Ingredient</p>
+							   <div class="clear_left">
+									<select name="ingredients">
+									<option  value="Tofu">Tofu</option>
+									<option  value="Kale">Kale</option>
+									<option  value="Onions">Onions</option>
+									<option  value="Ground beef">Ground beef</option>
+									</select>
+									  <input type="submit" class="form-control" name= "diet_s" value="Go!">
+								</div> 
+					        </div><!-- /input-group -->
+						</form>
+				  </div>
 
 			</div>
 		</div>
@@ -95,20 +148,26 @@
     {% if shows %}
 	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
 		<ul id="flexiselDemo1">	
-			{% for show in shows %}              
+			{% for show in shows %}         
+			{% if show %}      
 			            <li>
 			                    <div class="item item-sub" style="background:{{show[3]}}" >
 			                        <div class="item1">
 			                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
 			                            <h3>{{show[2]}}</h3>
+			                        </div>
                                     <form action="/_select_recipes" method="post">
                                         <div id="back">
                                             <button name="recipe" class="btn imgsubm" value= "{{show[2]}}" type="submit"></button>
                                         </div>
                                     </form>
-			                        </div>
 			                        <div class="p-mask">
 			                            <h4>{{show[2]}}</h4>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
 			                            <p>The price of {{show[2]}} is {{show[1]}}</p>
 			                            <div class="social-icons">
 			                                <ul>
@@ -120,6 +179,13 @@
 			                        </div>
 			                    </div>
 			                </li>   
+			{% else %} 	
+			<li>
+				   <div class="item item-sub" style="background:url(../static/images/8.jpg)">
+						 <div class="item1"></div>					              
+				   </div>
+			</li>  
+			{% endif %} 
 			 {% endfor %}				
 		</ul>
 			<script type="text/javascript">
@@ -162,12 +228,16 @@
 	{% if shows1 %}
 	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
 		<ul id="flexiselDemo2">	
-			{% for show1 in shows1 %}              
+			{% for show1 in shows1 %}         
+			{% if show1 %}      
 			            <li>
 			                    <div class="item item-sub" style="background:{{show1[3]}}" >
 			                        <div class="item1">
 			                            <i class="glyphicon glyphicon-cutlery" aria-hidden="true"></i>
 			                            <h3>{{show1[2]}}</h3>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show1[2]}}" type="submit"></button>
 			                        </div>
 			                        <div class="p-mask">
 			                            <h4>{{show1[2]}}</h4>
@@ -187,6 +257,13 @@
 			                        </div>
 			                    </div>
 			                </li>   
+			{% else %} 	
+			<li>
+				   <div class="item item-sub" style="background:url(../static/images/8.jpg)">
+						 <div class="item1"></div>					              
+				   </div>
+			</li>  
+			{% endif %} 
 			 {% endfor %}				
 		</ul>
 			<script type="text/javascript">
@@ -229,7 +306,8 @@
 	{% if shows2 %}
 	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
 		<ul id="flexiselDemo3">	
-			{% for show2 in shows2 %}              
+			{% for show2 in shows2 %}         
+			{% if show2 %}      
 			            <li>
 			                    <div class="item item-sub" style="background:{{show2[3]}}" >
 			                        <div class="item1">
@@ -238,11 +316,14 @@
                                     <form action="/_select_recipes" method="post">
                                         <div id="back">
                                             <button name="recipe" class="btn imgsubm" value= "{{show2[2]}}" type="submit"></button>
-                                        </div>
-                                    </form>
 			                        </div>
 			                        <div class="p-mask">
 			                            <h4>{{show2[2]}}</h4>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show2[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
 			                            <p>The price of {{show2[2]}} is {{show2[1]}}</p>
 			                            <div class="social-icons">
 			                                <ul>
@@ -254,6 +335,13 @@
 			                        </div>
 			                    </div>
 			                </li>   
+			{% else %} 	
+			<li>
+				   <div class="item item-sub" style="background:url(../static/images/8.jpg)">
+						 <div class="item1"></div>					              
+				   </div>
+			</li>  
+			{% endif %} 
 			 {% endfor %}				
 		</ul>
 			<script type="text/javascript">
@@ -296,7 +384,8 @@
 	{% if shows3 %}
 	<div class="banner-bottom animated wow lightSpeedIn" data-wow-duration="1500ms" data-wow-delay="0ms">
 		<ul id="flexiselDemo4">	
-			{% for show3 in shows3 %}              
+			{% for show3 in shows3 %}         
+			{% if show3 %}      
 			            <li>
 			                    <div class="item item-sub" style="background:{{show3[3]}}" >
 			                        <div class="item1">
@@ -305,11 +394,14 @@
                                     <form action="/_select_recipes" method="post">
                                         <div id="back">
                                             <button name="recipe" class="btn imgsubm" value= "{{show3[2]}}" type="submit"></button>
-                                        </div>
-                                    </form>
 			                        </div>
 			                        <div class="p-mask">
 			                            <h4>{{show3[2]}}</h4>
+                                    <form action="/_select_recipes" method="post">
+                                        <div id="back">
+                                            <button name="recipe" class="btn imgsubm" value= "{{show3[2]}}" type="submit"></button>
+                                        </div>
+                                    </form>
 			                            <p>The price of {{show3[2]}} is {{show3[1]}}</p>
 			                            <div class="social-icons">
 			                                <ul>
@@ -321,6 +413,13 @@
 			                        </div>
 			                    </div>
 			                </li>   
+			{% else %} 	
+			<li>
+				   <div class="item item-sub" style="background:url(../static/images/8.jpg)">
+						 <div class="item1"></div>					              
+				   </div>
+			</li>  
+			{% endif %} 
 			 {% endfor %}				
 		</ul>
 			<script type="text/javascript">

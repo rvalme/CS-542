@@ -280,6 +280,7 @@ class ServerInterface(Singleton):
         else:
             print('Connected to Oracle successfully')
             cur = connection.cursor()
+
             if choice == 1:
 
                 cur.execute(limitchoice.exclude_ingredient_vegan(ingred))
@@ -320,12 +321,20 @@ class ServerInterface(Singleton):
 
                 cur.execute(query_factory.get_chef_info())
                 chef = cur.fetchall()
+
+            elif choice == 0:
+                cur.execute(limitchoice.exclude_ingredient_all(ingred))
+                for result in cur:
+                    exclude.append(result)
+                cur.execute(limitchoice.ingredient_exclulde_all(ingred))
+                for result in cur:
+                    ingredient.append(result)
+                cur.execute(query_factory.get_chef_info())
+                chef = cur.fetchall()
             cur.close()
             connection.close()
             exclude = dao_recipe.add_to_recipes(exclude,ingredient,chef)
             return exclude
-
-
 
 
 

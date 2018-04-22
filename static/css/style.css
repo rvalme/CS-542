@@ -46,6 +46,11 @@ p{
 .subm div{
     width: 30%
 }
+.main_choice{
+    position: absolute;
+    width: 1000px;
+    left: 40%;
+}
 .align_left div{
     width: 40%;
     float: left;
